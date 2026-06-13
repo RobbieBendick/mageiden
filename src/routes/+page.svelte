@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { DEFAULT_TITLE } from '$lib/site';
 
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
@@ -68,11 +69,11 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>Work with me</a>
-				<a href="/armory/alliance" class="cta cta--ghost cta--alliance">
+				<a href="{base}/armory/alliance" class="cta cta--ghost cta--alliance">
 					<span>Alliance</span>
 					<span class="mage-word">Mage</span>
 				</a>
-				<a href="/armory/horde" class="cta cta--ghost cta--horde">
+				<a href="{base}/armory/horde" class="cta cta--ghost cta--horde">
 					<span>Horde</span>
 					<span class="mage-word">Mage</span>
 				</a>
@@ -130,7 +131,7 @@
 
 				<figure class="tournament-figure">
 					<img
-						src="/images/tournament-screenshot.png"
+						src="{base}/images/tournament-screenshot.png"
 						alt="Tournament results — Super Frogs 1st place with Mageiden on the roster"
 						width="960"
 						height="540"

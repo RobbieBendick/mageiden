@@ -6,8 +6,13 @@ import {
 	type ArmoryCharacter,
 	type Realm
 } from '$lib/server/blizzard';
+import { getFeaturedMagePrerenderEntries } from '$lib/server/armory-mages';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+
+export function entries() {
+	return getFeaturedMagePrerenderEntries();
+}
 
 export const load: PageServerLoad = async ({ params }) => {
 	const realm = params.realm;

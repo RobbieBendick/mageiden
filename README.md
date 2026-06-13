@@ -1,42 +1,50 @@
-# sv
+# mageiden
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Landing page and TBC Anniversary armory for Mageiden coaching.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Development
 
 ```sh
-# create a new project
-npx sv create my-app
+pnpm install
+pnpm dev
 ```
 
-To recreate this project with the same configuration:
+Copy `.env.example` to `.env` and add your Blizzard API credentials plus featured mage realm/name values.
 
-```sh
-# recreate this project
-pnpm dlx sv@0.16.1 create --template minimal --types ts --install pnpm mageiden
+## GitHub Pages
+
+The site deploys automatically from the `dev` branch to:
+
+**https://robbiebendick.github.io/mageiden/**
+
+### One-time GitHub setup
+
+1. Open **Settings → Pages** in the repo.
+2. Set **Source** to **GitHub Actions**.
+3. Add these **Actions secrets** (Settings → Secrets and variables → Actions):
+
+| Secret | Value |
+|--------|--------|
+| `BLIZZARD_CLIENT_ID` | Blizzard API client ID |
+| `BLIZZARD_CLIENT_SECRET` | Blizzard API client secret |
+| `BLIZZARD_REGION` | `us`, `eu`, `kr`, or `tw` |
+| `ALLIANCE_MAGE_REALM` | Realm slug for featured Alliance mage |
+| `ALLIANCE_MAGE_NAME` | Character name |
+| `HORDE_MAGE_REALM` | Realm slug for featured Horde mage |
+| `HORDE_MAGE_NAME` | Character name |
+
+4. Push to `dev` — the workflow in `.github/workflows/deploy.yml` builds and publishes.
+
+### Local Pages build
+
+```powershell
+$env:BASE_PATH="/mageiden"
+pnpm run build
+pnpm run preview
 ```
 
-## Developing
+Armory pages are **prerendered at build time** using the secrets/env above. Only the featured mage URLs are generated; arbitrary character lookups are not supported on static hosting.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Custom domain
 
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+If you add a custom domain at the repo root, set `BASE_PATH` to empty in the workflow and rebuild.

@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { DEFAULT_TITLE } from '$lib/site';
 
 	let { children } = $props();
 </script>
 
 <svelte:head>
-	<link rel="icon" type="image/png" href="/images/m-logo.png" />
+	<link rel="icon" type="image/png" href="{base}/images/m-logo.png" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import EquipmentDisplay from '$lib/components/EquipmentDisplay.svelte';
 	import { pageTitle } from '$lib/site';
 	import type { PageData } from './$types';
@@ -22,7 +23,7 @@
 	<div class="page-noise"></div>
 
 	<div class="container page-inner">
-		<a href="/" class="back-link">← Home</a>
+		<a href="{base}/" class="back-link">← Home</a>
 
 		{#if !data.configured}
 			<div class="notice notice--warn">
