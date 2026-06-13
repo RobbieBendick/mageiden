@@ -19,6 +19,10 @@ export default defineConfig({
 			}),
 			paths: {
 				base: basePath ? (basePath as `/${string}`) : ''
+			},
+			prerender: {
+				// Allow deploy when mage env vars are missing (landing page only).
+				handleUnseenRoutes: 'ignore'
 			}
 		})
 	]

@@ -30,6 +30,23 @@ jobs:
           cache: pnpm
 
       - run: pnpm install
+
+      - name: Verify deploy secrets
+        run: |
+          for name in BLIZZARD_CLIENT_ID BLIZZARD_CLIENT_SECRET BLIZZARD_REGION ALLIANCE_MAGE_REALM ALLIANCE_MAGE_NAME HORDE_MAGE_REALM HORDE_MAGE_NAME; do
+            if [ -z "${!name}" ]; then
+              echo "::warning::$name is not set — armory pages will be skipped"
+            fi
+          done
+        env:
+          BLIZZARD_CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
+          BLIZZARD_CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
+          BLIZZARD_REGION: ${{ secrets.BLIZZARD_REGION }}
+          ALLIANCE_MAGE_REALM: ${{ secrets.ALLIANCE_MAGE_REALM }}
+          ALLIANCE_MAGE_NAME: ${{ secrets.ALLIANCE_MAGE_NAME }}
+          HORDE_MAGE_REALM: ${{ secrets.HORDE_MAGE_REALM }}
+          HORDE_MAGE_NAME: ${{ secrets.HORDE_MAGE_NAME }}
+
       - run: pnpm run build
         env:
           BASE_PATH: /mageiden
