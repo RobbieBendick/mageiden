@@ -1,4 +1,4 @@
-import type { ArmoryCharacter, ArmoryEnchantment, ArmoryItem } from '$lib/armory';
+import type { ArmoryCharacter, ArmoryEnchantment, ArmoryItem, ArenaBracketStats, BracketKey } from '$lib/armory';
 import { env } from '$env/dynamic/private';
 
 type Region = 'us' | 'eu' | 'kr' | 'tw';
@@ -149,6 +149,12 @@ type CharacterEquipment = {
 	equipped_items: EquippedItem[];
 };
 
+type CharacterSpecializations = Record<string, unknown>;
+
+type PvpBracketResponse = ArenaBracketStats;
+
+const ARENA_BRACKETS: BracketKey[] = ['2v2', '3v3', '5v5'];
+
 export type { ArmoryCharacter } from '$lib/armory';
 
 function parseEnchantments(
@@ -268,6 +274,29 @@ async function resolveItemIcons(
 	return iconMap;
 }
 
+async function fetchArenaBrackets(
+	basePath: string,
+	namespace: string
+): Promise<Partial<Record<BracketKey, ArenaBracketStats>>> {
+	const brackets: Partial<Record<BracketKey, ArenaBracketStats>> = {};
+
+	await Promise.all(
+		ARENA_BRACKETS.map(async (bracket) => {
+			try {
+				const data = await blizzardFetch<PvpBracketResponse>(
+					`${basePath}/pvp-bracket/${bracket}`,
+					namespace
+				);
+				brackets[bracket] = data;
+			} catch {
+				// bracket not played or unavailable
+			}
+		})
+	);
+
+	return brackets;
+}
+
 export async function getAnniversaryRealms(): Promise<Realm[]> {
 	const region = getRegion();
 	const data = await blizzardFetch<RealmIndexResponse>(
@@ -290,10 +319,14 @@ export async function getAnniversaryCharacter(
 	const nameSlug = slugifyCharacter(characterName);
 	const basePath = `/profile/wow/character/${realmSlug}/${nameSlug}`;
 
-	const [summary, equipment, media] = await Promise.all([
+	const [summary, equipment, media, specializations, arenaBrackets] = await Promise.all([
 		blizzardFetch<CharacterSummary>(basePath, namespace),
 		blizzardFetch<CharacterEquipment>(`${basePath}/equipment`, namespace),
-		blizzardFetch<CharacterMedia>(`${basePath}/character-media`, namespace).catch(() => null)
+		blizzardFetch<CharacterMedia>(`${basePath}/character-media`, namespace).catch(() => null),
+		blizzardFetch<CharacterSpecializations>(`${basePath}/specializations`, namespace).catch(
+			() => null
+		),
+		fetchArenaBrackets(basePath, namespace)
 	]);
 
 	const avatarUrl = media?.assets.find((asset) => asset.key === 'avatar')?.value;
@@ -329,7 +362,9 @@ export async function getAnniversaryCharacter(
 		guild: summary.guild?.name,
 		avatarUrl,
 		equippedItemLevel: summary.equipped_item_level,
-		equipment: equippedItems
+		equipment: equippedItems,
+		specializations,
+		arenaBrackets
 	};
 }
 

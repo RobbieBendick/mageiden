@@ -6,7 +6,7 @@ export const load: PageServerLoad = async () => {
 	const mage = getHordeMage();
 
 	if (!mage) {
-		throw redirect(303, '/armory');
+		throw redirect(303, '/');
 	}
 
 	throw redirect(303, mage.href);

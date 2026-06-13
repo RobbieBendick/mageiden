@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { DEFAULT_TITLE } from '$lib/site';
+
+	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
+
 	const stats = [
 		{ value: '20×', label: 'Rank 1 titles', accent: 'var(--purple-light)' },
 		{ value: '500+', label: 'Clients served', accent: 'var(--mage)' },
@@ -29,6 +33,10 @@
 	];
 </script>
 
+<svelte:head>
+	<title>{DEFAULT_TITLE}</title>
+</svelte:head>
+
 <main>
 	<section class="hero">
 		<div class="hero-glow hero-glow--left"></div>
@@ -38,7 +46,7 @@
 		<div class="container hero-inner">
 			<div class="badge">
 				<span class="badge-dot"></span>
-				20× Rank 1<span class="mage-word">Mage</span>
+				20× Rank 1 <span class="mage-word">Mage</span>
 			</div>
 
 			<h1>
@@ -54,10 +62,21 @@
 			</p>
 
 			<div class="hero-actions">
-				<a href="mailto:hello@mageiden.com" class="cta cta--primary">Work with me</a>
-				<a href="/armory/alliance" class="cta cta--ghost cta--alliance">Alliance <span class="mage-word">Mage</span></a>
-				<a href="/armory/horde" class="cta cta--ghost cta--horde">Horde <span class="mage-word">Mage</span></a>
-				<span class="cta-note">I usually reply within a few hours</span>
+				<a
+					href={DISCORD_URL}
+					class="cta cta--primary"
+					target="_blank"
+					rel="noopener noreferrer"
+				>Work with me</a>
+				<a href="/armory/alliance" class="cta cta--ghost cta--alliance">
+					<span>Alliance</span>
+					<span class="mage-word">Mage</span>
+				</a>
+				<a href="/armory/horde" class="cta cta--ghost cta--horde">
+					<span>Horde</span>
+					<span class="mage-word">Mage</span>
+				</a>
+				<span class="cta-note">Create a ticket order on Discord</span>
 			</div>
 		</div>
 	</section>
@@ -98,6 +117,32 @@
 					</article>
 				{/each}
 			</div>
+
+			<div class="tournament-proof">
+				<div class="tournament-header">
+					<p class="section-eyebrow">Tournament wins</p>
+					<h3>1st place on the biggest stage</h3>
+					<p class="tournament-intro">
+						Won with Super Frogs — beating Method Orange in the final and running through
+						teams stacked with the most decorated names in arena.
+					</p>
+				</div>
+
+				<figure class="tournament-figure">
+					<img
+						src="/images/tournament-screenshot.png"
+						alt="Tournament results — Super Frogs 1st place with Mageiden on the roster"
+						width="960"
+						height="540"
+						loading="lazy"
+					/>
+					<figcaption>
+						Competed with and against the best players in the game — Cdew, Snutz, Pikaboo,
+						and the rest of the Method roster. Same lobbies, same pressure, same level of
+						play you see at the top of the ladder.
+					</figcaption>
+				</figure>
+			</div>
 		</div>
 	</section>
 
@@ -105,10 +150,13 @@
 		<div class="footer-glow"></div>
 		<div class="container footer-inner">
 			<h2>Need a <span class="mage-word">mage</span> that hits?</h2>
-			<p>Hours in LFG looking for a partner, wrong fit most of the time. Arena coaching for any skill level. One message away.</p>
-			<a href="mailto:hello@mageiden.com" class="cta cta--ghost"
-				>hello@mageiden.com</a
-			>
+			<p>Hours in LFG looking for a partner, wrong fit most of the time. Arena coaching for any skill level. One message away on Discord.</p>
+			<a
+				href={DISCORD_URL}
+				class="cta cta--ghost"
+				target="_blank"
+				rel="noopener noreferrer"
+			>Join Discord</a>
 		</div>
 	</section>
 </main>
@@ -246,6 +294,7 @@
 	.cta {
 		display: inline-flex;
 		align-items: center;
+		gap: 0.35em;
 		font-size: 0.9375rem;
 		font-weight: 600;
 		text-decoration: none;
@@ -466,6 +515,58 @@
 		font-size: 0.875rem;
 		line-height: 1.6;
 		color: #7a7589;
+	}
+
+	.tournament-proof {
+		margin-top: 4rem;
+		padding-top: 3.5rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.tournament-header {
+		max-width: 36rem;
+	}
+
+	.tournament-header h3 {
+		margin-top: 0.75rem;
+		font-family: 'Syne', sans-serif;
+		font-size: clamp(1.375rem, 4vw, 1.875rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+	}
+
+	.tournament-intro {
+		margin-top: 0.75rem;
+		font-size: 1rem;
+		line-height: 1.65;
+		color: #7a7589;
+	}
+
+	.tournament-figure {
+		margin: 2rem 0 0;
+		padding: 0.75rem;
+		background: linear-gradient(145deg, rgba(20, 16, 32, 0.9), rgba(10, 8, 18, 0.95));
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 1rem;
+		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+	}
+
+	.tournament-figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 0.625rem;
+	}
+
+	.tournament-figure figcaption {
+		margin-top: 1.25rem;
+		padding-inline: 0.5rem 0.75rem;
+		font-size: 0.9375rem;
+		line-height: 1.65;
+		color: #9b97ad;
+		text-align: center;
+		max-width: 42rem;
+		margin-inline: auto;
 	}
 
 	/* ── Footer CTA ── */

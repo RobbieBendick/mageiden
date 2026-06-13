@@ -26,10 +26,3 @@ export function getAllianceMage(): FeaturedMage | null {
 export function getHordeMage(): FeaturedMage | null {
 	return buildMage(env.HORDE_MAGE_REALM, env.HORDE_MAGE_NAME);
 }
-
-export function getFeaturedMages() {
-	return {
-		alliance: getAllianceMage(),
-		horde: getHordeMage()
-	};
-}

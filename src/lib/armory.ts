@@ -65,6 +65,17 @@ export type ArmoryItem = {
 	enchantments: ArmoryEnchantment[];
 };
 
+export type BracketKey = '2v2' | '3v3' | '5v5';
+
+export type ArenaBracketStats = {
+	rating: number;
+	season_match_statistics: { played: number; won: number; lost: number };
+	weekly_match_statistics: { played: number; won: number; lost: number };
+};
+
+/** Raw Blizzard specializations response (loadouts + talent trees). */
+export type ArmorySpecializations = Record<string, unknown>;
+
 export type ArmoryCharacter = {
 	name: string;
 	realm: string;
@@ -79,6 +90,8 @@ export type ArmoryCharacter = {
 	avatarUrl?: string;
 	equippedItemLevel?: number;
 	equipment: ArmoryItem[];
+	specializations?: ArmorySpecializations | null;
+	arenaBrackets?: Partial<Record<BracketKey, ArenaBracketStats>>;
 };
 
 export function qualityColor(quality: string): string {

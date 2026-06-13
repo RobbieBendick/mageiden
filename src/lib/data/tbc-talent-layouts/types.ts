@@ -19,6 +19,10 @@ export type TalentLayoutRow = {
   icon?: string;
   /** When true, this slot is blank — reserve (row,col) but hide the node. */
   blank?: boolean;
+  /** Fallback tooltip. Use {{percent}} and set percentPerRank to show e.g. 30% when rank is 3. */
+  description?: string;
+  /** Percentage per rank (e.g. 10). Replaces {{percent}} in description with (percentPerRank * rank). */
+  percentPerRank?: number;
   /** Wowhead spell ID for tooltip link (e.g. 12658 for Improved Rend). */
   spellId?: number;
   /** Prereq nodes by their grid position (row, col). */
