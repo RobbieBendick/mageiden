@@ -8,7 +8,7 @@
 		{
 			value: '20×',
 			label: 'Rank 1 titles',
-			hint: 'Multiple metas, same result',
+			hint: 'Across multiple expansions and metas, same result',
 			accent: 'var(--purple-light)'
 		},
 		{
@@ -87,10 +87,9 @@
 			</h1>
 
 			<p class="hero-copy">
-				I've achieved R1 twenty times. I coach players at every skill level,
-				level, from players new to arenas to teammates pushing for their own Rank 1. You know the
-				LFG grind. Hours looking for the right partner, and most of the time they're not a good
-				match anyway. 500+ clients in. Same effort, every session.
+				Twenty Rank 1 titles. Five hundred clients coached. I work with players at every
+				level, from first steps in arena to partners chasing their own title. I know how bad the
+				LFG grind can be. Same focus, every session.
 			</p>
 
 			<div class="hero-actions">
@@ -127,13 +126,12 @@
 	</section>
 
 	<section class="achievements">
-		<div class="achievements-noise"></div>
 		<div class="container achievements-inner">
 			<div class="section-header">
 				<p class="section-eyebrow">Track record</p>
 				<h2>Proof, not promises</h2>
 				<p class="section-desc">
-					Ratings climbed, brackets won, clients pushed — swap in your numbers and keep the
+					Ratings climbed, brackets won, clients pushed. Swap in your numbers and keep the
 					layout.
 				</p>
 			</div>
@@ -167,7 +165,7 @@
 					<p class="section-eyebrow">Tournament wins</p>
 					<h3>1st place on the biggest stage</h3>
 					<p class="tournament-intro">
-						Won with Super Frogs — beating Method Orange in the final and running through
+						Won with Super Frogs, beating Method Orange in the final and running through
 						teams stacked with the most decorated names in arena.
 					</p>
 				</div>
@@ -175,13 +173,13 @@
 				<figure class="tournament-figure">
 					<img
 						src="{base}/images/tournament-screenshot.png"
-						alt="Tournament results — Super Frogs 1st place with Mageiden on the roster"
+						alt="Tournament results: Super Frogs 1st place with Mageiden on the roster"
 						width="960"
 						height="540"
 						loading="lazy"
 					/>
 					<figcaption>
-						Competed with and against the best players in the game — Cdew, Snutz, Pikaboo,
+						Competed with and against the best players in the game, including Cdew, Snutz, Pikaboo,
 						and the rest of the Method roster. Same lobbies, same pressure, same level of
 						play you see at the top of the ladder.
 					</figcaption>
@@ -508,24 +506,40 @@
 	/* ── Achievements ── */
 	.achievements {
 		position: relative;
+		isolation: isolate;
 		overflow: hidden;
 		padding: 6rem 0;
-		background:
-			radial-gradient(ellipse 60% 50% at 80% 20%, var(--purple-glow), transparent),
-			radial-gradient(ellipse 50% 40% at 10% 80%, var(--purple-muted), transparent),
-			#06050a;
+		background: #06050a;
+		box-shadow: inset 0 1px 0 rgba(167, 139, 250, 0.1);
 	}
 
-	.achievements-noise {
+	.achievements::before {
+		content: '';
 		position: absolute;
-		inset: 0;
-		opacity: 0.4;
-		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+		inset: -35% -15% auto -15%;
+		height: 75%;
+		background: linear-gradient(
+			128deg,
+			rgba(124, 58, 237, 0.16) 0%,
+			rgba(88, 28, 180, 0.07) 38%,
+			transparent 68%
+		);
+		transform: skewY(-5deg);
+		pointer-events: none;
+	}
+
+	.achievements::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0;
+		height: 45%;
+		background: linear-gradient(180deg, transparent, rgba(5, 5, 8, 0.85) 72%, #050508);
 		pointer-events: none;
 	}
 
 	.achievements-inner {
 		position: relative;
+		z-index: 1;
 	}
 
 	.section-header {
@@ -811,8 +825,32 @@
 			white-space: normal;
 		}
 
-		.stats-inner {
+		.stats {
+			margin-top: -2.5rem;
+		}
+
+		.stats-panel {
 			grid-template-columns: 1fr;
+			padding: 0.5rem;
+		}
+
+		.stat-cell:not(:last-child)::after {
+			top: auto;
+			right: 1.25rem;
+			bottom: 0;
+			left: 1.25rem;
+			width: auto;
+			height: 1px;
+			background: linear-gradient(
+				90deg,
+				transparent,
+				rgba(167, 139, 250, 0.18) 50%,
+				transparent
+			);
+		}
+
+		.stat-cell--featured .stat-value {
+			font-size: clamp(2.5rem, 12vw, 3.25rem);
 		}
 
 		.achievement-grid {
