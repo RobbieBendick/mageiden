@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { CLASS_COLORS } from '$lib/armory';
+	import { englishCount } from '$lib/number-words';
 	import {
 		RANK_ONE_CLASS_LEGEND,
+		RANK_ONE_ERA_LEGEND,
 		RANK_ONE_SEASONS,
+		RANK_ONE_TITLE_COUNT,
+		eraColor,
+		eraLabel,
 		formatSeasonNumber,
+		groupSeasonsByEra,
 		rankOneClassColor,
-		seasonCountLabel,
 		totalRankOneCount
 	} from '$lib/rank-one-seasons';
 	import TournamentCarousel, {
@@ -15,6 +20,9 @@
 	import { DEFAULT_TITLE } from '$lib/site';
 
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
+
+	const rankOneMetric = `${RANK_ONE_TITLE_COUNT}×`;
+	const rankOneWord = englishCount(RANK_ONE_TITLE_COUNT, true);
 
 	const tournamentSlides: TournamentSlide[] = [
 		{
@@ -33,7 +41,7 @@
 
 	const stats = [
 		{
-			value: '20×',
+			value: rankOneMetric,
 			label: 'Rank 1 titles',
 			hint: 'Across multiple expansions and metas, same result',
 			accent: 'var(--purple-light)'
@@ -82,11 +90,10 @@
 		},
 		{
 			tag: 'Titles',
-			metric: '20×',
+			metric: rankOneMetric,
 			metricLabel: 'rank one',
 			title: 'Stacked seasons',
-			description:
-				'Twenty titles across expansions and metas. Rank 1 on four classes, with Mage as the main.',
+			description: `${rankOneWord} titles across expansions and metas. Rank 1 on four classes, with Mage as the main.`,
 			accent: 'var(--purple)',
 			wide: true,
 			classes: [
@@ -112,7 +119,7 @@
 		<div class="container hero-inner">
 			<div class="badge">
 				<span class="badge-dot"></span>
-				20× Rank 1 Tournament Player
+				{rankOneMetric} Rank 1 Tournament Player
 			</div>
 
 			<h1>
@@ -121,7 +128,7 @@
 			</h1>
 
 			<p class="hero-copy">
-				Twenty Rank 1 titles. Five hundred clients coached. I work with players at every
+				{rankOneWord} Rank 1 titles. Five hundred clients coached. I work with players at every
 				level, from first steps in arena to partners chasing their own title. I know how bad the
 				LFG grind can be. Same focus, every session.
 			</p>
@@ -218,39 +225,76 @@
 									<div class="title-seasons-heading">
 										<p class="title-seasons-label">Rank 1 seasons</p>
 										<span class="title-seasons-count"
-											>{seasonCountLabel(totalRankOneCount(RANK_ONE_SEASONS))} total</span
+											>{totalRankOneCount(RANK_ONE_SEASONS)} total</span
 										>
 									</div>
-									<div class="title-seasons-legend" aria-label="Classes">
-										{#each RANK_ONE_CLASS_LEGEND as item}
-											<span class="title-seasons-legend-item" style="--class-color: {item.color}">
-												<span class="title-seasons-legend-dot" aria-hidden="true"></span>
-												{item.name}
-											</span>
-										{/each}
+									<div class="title-seasons-legends">
+										<div class="title-seasons-legend" aria-label="Eras">
+											{#each RANK_ONE_ERA_LEGEND as item}
+												<span
+													class="title-seasons-legend-item"
+													style="--legend-color: {item.color}"
+												>
+													<span class="title-seasons-legend-dot" aria-hidden="true"></span>
+													{item.label}
+												</span>
+											{/each}
+										</div>
+										<div class="title-seasons-legend" aria-label="Classes">
+											{#each RANK_ONE_CLASS_LEGEND as item}
+												<span
+													class="title-seasons-legend-item"
+													style="--legend-color: {item.color}"
+												>
+													<span class="title-seasons-legend-dot" aria-hidden="true"></span>
+													{item.name}
+												</span>
+											{/each}
+										</div>
 									</div>
 								</div>
-								<ol class="title-seasons-grid">
-									{#each RANK_ONE_SEASONS as season}
-										<li
-											class="title-season"
-											style="--class-color: {rankOneClassColor(season.className)}"
-										>
-											<span class="title-season-tag">{formatSeasonNumber(season.season)}</span>
-											<span class="title-season-name-wrap">
-												<span class="title-season-name">{season.name}</span>
-												{#if (season.count ?? 1) > 1}
-													<span
-														class="title-season-mult"
-														aria-label="{season.count} rank 1 titles on {season.className}"
-														>{season.count}×</span
-													>
-												{/if}
-											</span>
-											<span class="title-season-class">{season.className}</span>
-										</li>
-									{/each}
-								</ol>
+								{#each groupSeasonsByEra(RANK_ONE_SEASONS) as group}
+									<section
+										class="title-seasons-era title-seasons-era--{group.era}"
+										style="--era-color: {eraColor(group.era)}"
+									>
+										<h4 class="title-seasons-era-label">
+											<span class="title-seasons-era-chip">{eraLabel(group.era)}</span>
+											<span class="title-seasons-era-count"
+												>{totalRankOneCount(group.seasons)} title{totalRankOneCount(
+													group.seasons
+												) === 1
+													? ''
+													: 's'}</span
+											>
+										</h4>
+										<ol class="title-seasons-grid">
+											{#each group.seasons as season}
+												<li class="title-season">
+													<span class="title-season-tag">{formatSeasonNumber(season.season)}</span>
+													<span class="title-season-name">{season.name}</span>
+													<span class="title-season-classes">
+														{#each season.classes as cls}
+															<span
+																class="title-season-class"
+																style="--class-color: {rankOneClassColor(cls.className)}"
+															>
+																{cls.className}
+																{#if (cls.count ?? 1) > 1}
+																	<span
+																		class="title-season-mult"
+																		aria-label="{cls.count} rank 1 titles on {cls.className}"
+																		>{cls.count}×</span
+																	>
+																{/if}
+															</span>
+														{/each}
+													</span>
+												</li>
+											{/each}
+										</ol>
+									</section>
+								{/each}
 							</div>
 						{/if}
 					</article>
@@ -927,9 +971,17 @@
 		color: var(--purple-light);
 	}
 
+	.title-seasons-legends {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.45rem;
+	}
+
 	.title-seasons-legend {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: flex-end;
 		gap: 0.5rem 0.85rem;
 	}
 
@@ -946,8 +998,42 @@
 		width: 0.4rem;
 		height: 0.4rem;
 		border-radius: 50%;
-		background: var(--class-color);
+		background: var(--legend-color);
 		flex-shrink: 0;
+	}
+
+	.title-seasons-era + .title-seasons-era {
+		margin-top: 1.1rem;
+		padding-top: 1.1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.title-seasons-era-label {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin: 0 0 0.7rem;
+	}
+
+	.title-seasons-era-chip {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--era-color);
+		background: color-mix(in srgb, var(--era-color) 14%, transparent);
+		border: 1px solid color-mix(in srgb, var(--era-color) 32%, transparent);
+	}
+
+	.title-seasons-era-count {
+		font-size: 0.6875rem;
+		font-weight: 500;
+		color: #6b6678;
 	}
 
 	.title-seasons-grid {
@@ -982,13 +1068,6 @@
 		letter-spacing: 0.02em;
 	}
 
-	.title-season-name-wrap {
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-		min-width: 0;
-	}
-
 	.title-season-name {
 		font-size: 0.8125rem;
 		font-weight: 500;
@@ -1001,30 +1080,36 @@
 		min-width: 0;
 	}
 
-	.title-season-mult {
+	.title-season-classes {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.3rem;
+		max-width: 8.5rem;
+	}
+
+	.title-season-class {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.2rem;
 		flex-shrink: 0;
-		padding: 0.1rem 0.35rem;
+		font-size: 0.625rem;
+		font-weight: 600;
+		color: var(--class-color);
+		white-space: nowrap;
+	}
+
+	.title-season-mult {
+		padding: 0.05rem 0.3rem;
 		border-radius: 999px;
 		font-family: 'Syne', sans-serif;
-		font-size: 0.625rem;
+		font-size: 0.5625rem;
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
 		line-height: 1.2;
 		color: var(--class-color);
 		background: color-mix(in srgb, var(--class-color) 18%, transparent);
 		border: 1px solid color-mix(in srgb, var(--class-color) 35%, transparent);
-	}
-
-	.title-season-class {
-		flex-shrink: 0;
-		max-width: 4.5rem;
-		font-size: 0.625rem;
-		font-weight: 600;
-		color: var(--class-color);
-		text-align: right;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
 
 	.card-metric-value {
@@ -1199,6 +1284,14 @@
 		.title-seasons-header {
 			flex-direction: column;
 			align-items: flex-start;
+		}
+
+		.title-seasons-legends {
+			align-items: flex-start;
+		}
+
+		.title-seasons-legend {
+			justify-content: flex-start;
 		}
 
 		.title-seasons-grid {
