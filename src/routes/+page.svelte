@@ -18,6 +18,7 @@
 		type TournamentSlide
 	} from '$lib/components/TournamentCarousel.svelte';
 	import { DEFAULT_TITLE } from '$lib/site';
+	import { scrollReveal } from '$lib/scroll-reveal';
 
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
 
@@ -145,23 +146,23 @@
 		<div class="hero-grid"></div>
 
 		<div class="container hero-inner">
-			<div class="badge">
+			<div class="badge" use:scrollReveal={{ delay: 0, variant: 'soft' }}>
 				<span class="badge-dot"></span>
 				{rankOneMetric} Rank 1 Tournament Player
 			</div>
 
-			<h1>
+			<h1 use:scrollReveal={{ delay: 90, variant: 'rise' }}>
 				<span class="title-line">Not theory.</span>
 				<span class="title-line title-line--accent">Rank 1 reps.</span>
 			</h1>
 
-			<p class="hero-copy">
+			<p class="hero-copy" use:scrollReveal={{ delay: 180, variant: 'soft' }}>
 				With {rankOneWord} Rank 1 titles and over five hundred clients coached, I work with players
 				at every level, from first steps in arena to partners chasing a title of their own. I know
 				how bad the LFG grind can be, so skip the headache and start improving today.
 			</p>
 
-			<div class="hero-actions">
+			<div class="hero-actions" use:scrollReveal={{ delay: 270, variant: 'scale' }}>
 				<div class="hero-cta-primary">
 					<a
 						href={DISCORD_URL}
@@ -186,7 +187,11 @@
 					<article
 						class="stat-cell"
 						class:stat-cell--featured={i === 0}
-						style="--accent: {stat.accent}; --delay: {i * 70}ms"
+						style="--accent: {stat.accent}"
+						use:scrollReveal={{
+							delay: i * 90,
+							variant: i === 0 ? 'left' : i === 2 ? 'right' : 'scale'
+						}}
 					>
 						<div class="stat-cell-glow" aria-hidden="true"></div>
 						<span class="stat-value">{stat.value}</span>
@@ -200,7 +205,7 @@
 
 	<section class="achievements">
 		<div class="container achievements-inner">
-			<div class="section-header">
+			<div class="section-header" use:scrollReveal={{ variant: 'left' }}>
 				<p class="section-eyebrow">Track record</p>
 				<h2>Proof, not promises</h2>
 				<p class="section-desc">
@@ -215,7 +220,11 @@
 						class="achievement-card"
 						class:achievement-card--wide={achievement.wide}
 						class:achievement-card--titles={achievement.tag === 'Titles'}
-						style="--accent: {achievement.accent}; --delay: {i * 80}ms"
+						style="--accent: {achievement.accent}"
+						use:scrollReveal={{
+							delay: i * 100,
+							variant: i % 2 === 0 ? 'left' : 'right'
+						}}
 					>
 						<div class="card-sheen" aria-hidden="true"></div>
 						<div class="titles-row">
@@ -250,7 +259,7 @@
 							</div>
 						</div>
 						{#if achievement.tag === 'Titles'}
-							<div class="title-seasons">
+							<div class="title-seasons" use:scrollReveal={{ delay: 220, variant: 'rise' }}>
 								<div class="title-seasons-header">
 									<div class="title-seasons-heading">
 										<p class="title-seasons-label">Rank 1 seasons</p>
@@ -283,10 +292,14 @@
 										</div>
 									</div>
 								</div>
-								{#each groupSeasonsByEra(RANK_ONE_SEASONS) as group}
+								{#each groupSeasonsByEra(RANK_ONE_SEASONS) as group, groupIndex}
 									<section
 										class="title-seasons-era title-seasons-era--{group.era}"
 										style="--era-color: {eraColor(group.era)}"
+										use:scrollReveal={{
+											delay: 320 + groupIndex * 120,
+											variant: groupIndex % 2 === 0 ? 'left' : 'right'
+										}}
 									>
 										<h4 class="title-seasons-era-label">
 											<span class="title-seasons-era-chip">{eraLabel(group.era)}</span>
@@ -331,7 +344,7 @@
 				{/each}
 			</div>
 
-			<article class="network-panel" style="--accent: #6ee7b7">
+			<article class="network-panel" style="--accent: #6ee7b7" use:scrollReveal={{ delay: 80, variant: 'rise' }}>
 				<div class="network-panel-sheen" aria-hidden="true"></div>
 				<div class="network-panel-body">
 					<div class="network-panel-copy">
@@ -346,28 +359,29 @@
 						</p>
 					</div>
 					<ul class="network-panel-features">
-						<li class="network-feature">
-							<span class="network-feature-label">2v2</span>
-							<span class="network-feature-text">A partner when my class isn't the right fit</span>
-						</li>
-						<li class="network-feature">
-							<span class="network-feature-label">3v3</span>
-							<span class="network-feature-text">Arena partners when you need a third</span>
-						</li>
-						<li class="network-feature">
-							<span class="network-feature-label">5v5</span>
-							<span class="network-feature-text">Full teams for larger brackets</span>
-						</li>
-						<li class="network-feature">
-							<span class="network-feature-label">Fill</span>
-							<span class="network-feature-text">Coaching or play from another class</span>
-						</li>
+						{#each [
+							{ label: '2v2', text: "A partner when my class isn't the right fit" },
+							{ label: '3v3', text: 'Arena partners when you need a third' },
+							{ label: '5v5', text: 'Full teams for larger brackets' },
+							{ label: 'Fill', text: 'Coaching or play from another class' }
+						] as feature, featureIndex}
+							<li
+								class="network-feature"
+								use:scrollReveal={{
+									delay: 140 + featureIndex * 110,
+									variant: featureIndex % 2 === 0 ? 'left' : 'right'
+								}}
+							>
+								<span class="network-feature-label">{feature.label}</span>
+								<span class="network-feature-text">{feature.text}</span>
+							</li>
+						{/each}
 					</ul>
 				</div>
 			</article>
 
 			<div class="tournament-proof">
-				<div class="tournament-copy">
+				<div class="tournament-copy" use:scrollReveal={{ variant: 'left' }}>
 					<p class="section-eyebrow">Tournament wins</p>
 					<h3>1st place on the biggest stage</h3>
 					<p class="tournament-intro">
@@ -377,9 +391,9 @@
 					</p>
 				</div>
 
-				<div class="tournament-media">
+				<div class="tournament-media" use:scrollReveal={{ delay: 120, variant: 'right' }}>
 					<TournamentCarousel slides={tournamentSlides} />
-					<p class="tournament-caption">
+					<p class="tournament-caption" use:scrollReveal={{ delay: 220, variant: 'soft' }}>
 						Brackets stacked with Chan, Wealthyman, Snutz, Kubzy, Pikaboo, Wizk, Paypay, Cdew, and the rest of Method.
 						No easy paths, no weak finals. That's where my coaching comes from.
 					</p>
@@ -391,19 +405,111 @@
 	<section class="footer-cta">
 		<div class="footer-glow"></div>
 		<div class="container footer-inner">
-			<h2>Need a player that hits?</h2>
-			<p>You've spent enough time in LFG with the wrong fit. Skip the headache and start improving today. One message away on Discord.</p>
+			<h2 use:scrollReveal={{ variant: 'rise' }}>Need a player that hits?</h2>
+			<p use:scrollReveal={{ delay: 90, variant: 'soft' }}>
+				You've spent enough time in LFG with the wrong fit. Skip the headache and start improving today. One message away on Discord.
+			</p>
 			<a
 				href={DISCORD_URL}
 				class="cta cta--ghost"
 				target="_blank"
 				rel="noopener noreferrer"
+				use:scrollReveal={{ delay: 180, variant: 'scale' }}
 			>Join Discord</a>
 		</div>
 	</section>
 </main>
 
 <style>
+	:global(.scroll-reveal) {
+		opacity: 0;
+	}
+
+	:global(.scroll-reveal:not(.scroll-reveal--done)) {
+		--reveal-duration: 1.2s;
+		transition:
+			opacity var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1),
+			transform var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1),
+			filter var(--reveal-duration) cubic-bezier(0.16, 1, 0.3, 1);
+		transition-delay: var(--reveal-delay, 0ms);
+		will-change: opacity, transform, filter;
+	}
+
+	.stat-cell:global(.scroll-reveal:not(.scroll-reveal--done)),
+	.achievement-card:global(.scroll-reveal:not(.scroll-reveal--done)),
+	.network-panel:global(.scroll-reveal:not(.scroll-reveal--done)),
+	.network-feature:global(.scroll-reveal:not(.scroll-reveal--done)),
+	.title-seasons:global(.scroll-reveal:not(.scroll-reveal--done)),
+	.title-seasons-era:global(.scroll-reveal:not(.scroll-reveal--done)) {
+		transition:
+			opacity var(--reveal-duration, 1.2s) cubic-bezier(0.16, 1, 0.3, 1),
+			transform var(--reveal-duration, 1.2s) cubic-bezier(0.16, 1, 0.3, 1),
+			filter var(--reveal-duration, 1.2s) cubic-bezier(0.16, 1, 0.3, 1);
+		transition-delay: var(--reveal-delay, 0ms);
+	}
+
+	:global(.scroll-reveal--soft) {
+		transform: translate3d(0, 0.75rem, 0);
+		filter: blur(4px);
+	}
+
+	:global(.scroll-reveal--rise) {
+		transform: translate3d(0, 1.5rem, 0);
+		filter: blur(8px);
+	}
+
+	:global(.scroll-reveal--scale) {
+		transform: translate3d(0, 1.25rem, 0) scale(0.96);
+		filter: blur(6px);
+		transform-origin: 50% 100%;
+	}
+
+	:global(.scroll-reveal--left) {
+		transform: translate3d(-2.75rem, 0.65rem, 0) scale(0.98);
+		filter: blur(8px);
+	}
+
+	:global(.scroll-reveal--right) {
+		transform: translate3d(2.75rem, 0.65rem, 0) scale(0.98);
+		filter: blur(8px);
+	}
+
+	:global(.scroll-reveal.scroll-reveal--visible) {
+		opacity: 1;
+		transform: translate3d(0, 0, 0) scale(1);
+		filter: blur(0);
+	}
+
+	:global(.scroll-reveal.scroll-reveal--done) {
+		will-change: auto;
+		transition: none;
+	}
+
+	.stat-cell.scroll-reveal--done,
+	.achievement-card.scroll-reveal--done,
+	.network-panel.scroll-reveal--done,
+	.title-seasons.scroll-reveal--done,
+	.title-seasons-era.scroll-reveal--done,
+	.network-feature.scroll-reveal--done {
+		transition:
+			border-color 0.3s ease,
+			transform 0.3s ease,
+			box-shadow 0.3s ease,
+			background 0.3s ease,
+			opacity 0.3s ease,
+			filter 0.3s ease;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.scroll-reveal) {
+			opacity: 1;
+			transform: none;
+			filter: none;
+			transition: none;
+			will-change: auto;
+		}
+	}
+
 	.container {
 		width: min(72rem, 100% - 3rem);
 		margin-inline: auto;
@@ -457,6 +563,7 @@
 
 	.hero-inner {
 		position: relative;
+		z-index: 2;
 	}
 
 	.badge {
@@ -635,11 +742,6 @@
 		padding: 1.75rem 1.5rem 1.65rem;
 		overflow: hidden;
 		border-radius: 1.05rem;
-		transition:
-			background 0.3s ease,
-			transform 0.3s ease;
-		animation: card-in 0.55s ease backwards;
-		animation-delay: var(--delay);
 	}
 
 	.stat-cell:not(:last-child)::after {
@@ -803,12 +905,6 @@
 			radial-gradient(ellipse 90% 100% at 0% 50%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%),
 			linear-gradient(160deg, rgba(22, 18, 36, 0.92), rgba(8, 6, 14, 0.98));
 		backdrop-filter: blur(16px);
-		transition:
-			border-color 0.3s ease,
-			transform 0.3s ease,
-			box-shadow 0.3s ease;
-		animation: card-in 0.55s ease backwards;
-		animation-delay: 320ms;
 	}
 
 	.network-panel:hover {
@@ -872,9 +968,6 @@
 		border-radius: 0.75rem;
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		background: rgba(255, 255, 255, 0.03);
-		transition:
-			border-color 0.25s ease,
-			background 0.25s ease;
 	}
 
 	.network-panel:hover .network-feature {
@@ -917,19 +1010,6 @@
 			radial-gradient(ellipse 120% 80% at 100% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 55%),
 			linear-gradient(160deg, rgba(22, 18, 36, 0.92), rgba(8, 6, 14, 0.98));
 		backdrop-filter: blur(16px);
-		transition:
-			border-color 0.3s ease,
-			transform 0.3s ease,
-			box-shadow 0.3s ease;
-		animation: card-in 0.55s ease backwards;
-		animation-delay: var(--delay);
-	}
-
-	@keyframes card-in {
-		from {
-			opacity: 0;
-			transform: translateY(12px);
-		}
 	}
 
 	.achievement-card--wide {
