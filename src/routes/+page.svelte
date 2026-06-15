@@ -1,8 +1,26 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import TournamentCarousel, {
+		type TournamentSlide
+	} from '$lib/components/TournamentCarousel.svelte';
 	import { DEFAULT_TITLE } from '$lib/site';
 
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
+
+	const tournamentSlides: TournamentSlide[] = [
+		{
+			src: `${base}/images/tournament-screenshot.png`,
+			alt: 'Tournament results: Super Frogs 1st place with Mageiden on the roster',
+			href: 'https://www.esportsearnings.com/tournaments/30588-spring-na-cup-1',
+			label: 'Spring NA Cup 1'
+		},
+		{
+			src: `${base}/images/tournament-screenshot-2.png`,
+			alt: 'Tournament results: WOW NA Arena Cup 4',
+			href: 'https://www.esportsearnings.com/tournaments/50632-wow-na-arena-cup-4',
+			label: 'WOW NA Arena Cup 4'
+		}
+	];
 
 	const stats = [
 		{
@@ -63,6 +81,16 @@
 			wide: true
 		}
 	];
+
+	const pridefulAchievement = `${base}/images/prideful-achievment.png`;
+
+	const heroAchievementMarks = [
+		{ x: '68%', y: '16%', r: '-14deg', s: 0.9, o: 0.22 },
+		{ x: '84%', y: '30%', r: '11deg', s: 1.05, o: 0.19 },
+		{ x: '72%', y: '48%', r: '-8deg', s: 0.95, o: 0.21 },
+		{ x: '90%', y: '58%', r: '15deg', s: 0.88, o: 0.18 },
+		{ x: '76%', y: '76%', r: '-11deg', s: 1, o: 0.2 }
+	];
 </script>
 
 <svelte:head>
@@ -73,12 +101,22 @@
 	<section class="hero">
 		<div class="hero-glow hero-glow--left"></div>
 		<div class="hero-glow hero-glow--right"></div>
+		<div class="hero-achievements" aria-hidden="true">
+			{#each heroAchievementMarks as mark}
+				<span
+					class="hero-achievement"
+					style="--x: {mark.x}; --y: {mark.y}; --r: {mark.r}; --s: {mark.s}; --o: {mark.o}"
+				>
+					<img src={pridefulAchievement} alt="" width="256" height="256" />
+				</span>
+			{/each}
+		</div>
 		<div class="hero-grid"></div>
 
 		<div class="container hero-inner">
 			<div class="badge">
 				<span class="badge-dot"></span>
-				20× Rank 1
+				20× Rank 1 Tournament Player
 			</div>
 
 			<h1>
@@ -93,14 +131,16 @@
 			</p>
 
 			<div class="hero-actions">
-				<a
-					href={DISCORD_URL}
-					class="cta cta--primary"
-					target="_blank"
-					rel="noopener noreferrer"
-				>Work with me</a>
-				<a href="{base}/armory/alliance" class="cta cta--ghost cta--alliance">Alliance Armory</a>
-				<a href="{base}/armory/horde" class="cta cta--ghost cta--horde">Horde Armory</a>
+				<div class="hero-buttons">
+					<a
+						href={DISCORD_URL}
+						class="cta cta--primary"
+						target="_blank"
+						rel="noopener noreferrer"
+					>Work with me</a>
+					<a href="{base}/armory/alliance" class="cta cta--ghost cta--alliance">Alliance Armory</a>
+					<a href="{base}/armory/horde" class="cta cta--ghost cta--horde">Horde Armory</a>
+				</div>
 				<span class="cta-note">Create a ticket order on Discord</span>
 			</div>
 		</div>
@@ -161,7 +201,7 @@
 			</div>
 
 			<div class="tournament-proof">
-				<div class="tournament-header">
+				<div class="tournament-copy">
 					<p class="section-eyebrow">Tournament wins</p>
 					<h3>1st place on the biggest stage</h3>
 					<p class="tournament-intro">
@@ -170,20 +210,14 @@
 					</p>
 				</div>
 
-				<figure class="tournament-figure">
-					<img
-						src="{base}/images/tournament-screenshot.png"
-						alt="Tournament results: Super Frogs 1st place with Mageiden on the roster"
-						width="960"
-						height="540"
-						loading="lazy"
-					/>
-					<figcaption>
+				<div class="tournament-media">
+					<TournamentCarousel slides={tournamentSlides} />
+					<p class="tournament-caption">
 						Competed with and against the best players in the game, including Cdew, Snutz, Pikaboo,
 						and the rest of the Method roster. Same lobbies, same pressure, same level of
 						play you see at the top of the ladder.
-					</figcaption>
-				</figure>
+					</p>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -222,6 +256,7 @@
 	.hero-grid {
 		position: absolute;
 		inset: 0;
+		z-index: 1;
 		background-image:
 			linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
 			linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -232,6 +267,7 @@
 
 	.hero-glow {
 		position: absolute;
+		z-index: 1;
 		border-radius: 50%;
 		filter: blur(80px);
 		pointer-events: none;
@@ -253,8 +289,49 @@
 		background: var(--purple-glow);
 	}
 
+	.hero-achievements {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+		mask-image: linear-gradient(90deg, transparent 38%, rgba(0, 0, 0, 0.45) 55%, black 75%);
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			transparent 38%,
+			rgba(0, 0, 0, 0.45) 55%,
+			black 75%
+		);
+	}
+
+	.hero-achievement {
+		position: absolute;
+		left: var(--x);
+		top: var(--y);
+		display: block;
+		width: clamp(10rem, 22vw, 18rem);
+		opacity: var(--o);
+		transform: translate(-50%, -50%) rotate(var(--r)) scale(var(--s));
+	}
+
+	.hero-achievement img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.hero-achievement::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--purple-light);
+		opacity: 0.13;
+		mix-blend-mode: hue;
+		pointer-events: none;
+	}
+
 	.hero-inner {
 		position: relative;
+		z-index: 2;
 	}
 
 	.badge {
@@ -322,10 +399,17 @@
 
 	.hero-actions {
 		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+		margin-top: 2.5rem;
+	}
+
+	.hero-buttons {
+		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 1.25rem;
-		margin-top: 2.5rem;
 	}
 
 	.cta {
@@ -719,16 +803,16 @@
 	}
 
 	.tournament-proof {
+		display: grid;
+		grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+		gap: 2.5rem 3rem;
+		align-items: start;
 		margin-top: 4rem;
 		padding-top: 3.5rem;
 		border-top: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
-	.tournament-header {
-		max-width: 36rem;
-	}
-
-	.tournament-header h3 {
+	.tournament-copy h3 {
 		margin-top: 0.75rem;
 		font-family: 'Syne', sans-serif;
 		font-size: clamp(1.375rem, 4vw, 1.875rem);
@@ -743,31 +827,15 @@
 		color: #7a7589;
 	}
 
-	.tournament-figure {
-		margin: 2rem 0 0;
-		padding: 0.75rem;
-		background: linear-gradient(145deg, rgba(20, 16, 32, 0.9), rgba(10, 8, 18, 0.95));
-		border: 1px solid rgba(255, 255, 255, 0.06);
-		border-radius: 1rem;
-		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+	.tournament-media {
+		min-width: 0;
 	}
 
-	.tournament-figure img {
-		display: block;
-		width: 100%;
-		height: auto;
-		border-radius: 0.625rem;
-	}
-
-	.tournament-figure figcaption {
-		margin-top: 1.25rem;
-		padding-inline: 0.5rem 0.75rem;
-		font-size: 0.9375rem;
+	.tournament-caption {
+		margin-top: 0.875rem;
+		font-size: 0.875rem;
 		line-height: 1.65;
-		color: #9b97ad;
-		text-align: center;
-		max-width: 42rem;
-		margin-inline: auto;
+		color: #7a7589;
 	}
 
 	/* ── Footer CTA ── */
@@ -815,6 +883,15 @@
 	@media (max-width: 720px) {
 		.hero {
 			padding: 5rem 0 4rem;
+		}
+
+		.hero-achievements {
+			mask-image: linear-gradient(90deg, transparent 50%, black 88%);
+			-webkit-mask-image: linear-gradient(90deg, transparent 50%, black 88%);
+		}
+
+		.hero-achievement {
+			width: clamp(8rem, 34vw, 14rem);
 		}
 
 		h1 {
@@ -879,9 +956,9 @@
 			text-align: left;
 		}
 
-		.hero-actions {
-			flex-direction: column;
-			align-items: flex-start;
+		.tournament-proof {
+			grid-template-columns: 1fr;
+			gap: 1.75rem;
 		}
 	}
 </style>
