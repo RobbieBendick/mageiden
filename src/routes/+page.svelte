@@ -1,5 +1,14 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { CLASS_COLORS } from '$lib/armory';
+	import {
+		RANK_ONE_CLASS_LEGEND,
+		RANK_ONE_SEASONS,
+		formatSeasonNumber,
+		rankOneClassColor,
+		seasonCountLabel,
+		totalRankOneCount
+	} from '$lib/rank-one-seasons';
 	import TournamentCarousel, {
 		type TournamentSlide
 	} from '$lib/components/TournamentCarousel.svelte';
@@ -76,20 +85,17 @@
 			metric: '20×',
 			metricLabel: 'rank one',
 			title: 'Stacked seasons',
-			description: 'Expansions, patches, and metas where the title actually landed.',
+			description:
+				'Twenty titles across expansions and metas. Rank 1 on four classes, with Mage as the main.',
 			accent: 'var(--purple)',
-			wide: true
+			wide: true,
+			classes: [
+				{ name: 'Mage', color: CLASS_COLORS.Mage, main: true },
+				{ name: 'Rogue', color: CLASS_COLORS.Rogue },
+				{ name: 'Warlock', color: CLASS_COLORS.Warlock },
+				{ name: 'Ele Shaman', color: CLASS_COLORS.Shaman }
+			]
 		}
-	];
-
-	const pridefulAchievement = `${base}/images/prideful-achievment.png`;
-
-	const heroAchievementMarks = [
-		{ x: '68%', y: '16%', r: '-14deg', s: 0.9, o: 0.22 },
-		{ x: '84%', y: '30%', r: '11deg', s: 1.05, o: 0.19 },
-		{ x: '72%', y: '48%', r: '-8deg', s: 0.95, o: 0.21 },
-		{ x: '90%', y: '58%', r: '15deg', s: 0.88, o: 0.18 },
-		{ x: '76%', y: '76%', r: '-11deg', s: 1, o: 0.2 }
 	];
 </script>
 
@@ -101,16 +107,6 @@
 	<section class="hero">
 		<div class="hero-glow hero-glow--left"></div>
 		<div class="hero-glow hero-glow--right"></div>
-		<div class="hero-achievements" aria-hidden="true">
-			{#each heroAchievementMarks as mark}
-				<span
-					class="hero-achievement"
-					style="--x: {mark.x}; --y: {mark.y}; --r: {mark.r}; --s: {mark.s}; --o: {mark.o}"
-				>
-					<img src={pridefulAchievement} alt="" width="256" height="256" />
-				</span>
-			{/each}
-		</div>
 		<div class="hero-grid"></div>
 
 		<div class="container hero-inner">
@@ -181,21 +177,82 @@
 					<article
 						class="achievement-card"
 						class:achievement-card--wide={achievement.wide}
+						class:achievement-card--titles={achievement.tag === 'Titles'}
 						style="--accent: {achievement.accent}; --delay: {i * 80}ms"
 					>
 						<div class="card-sheen" aria-hidden="true"></div>
-						<div class="card-body">
-							<div class="card-meta">
-								<span class="card-tag">{achievement.tag}</span>
-								<span class="card-line" aria-hidden="true"></span>
+						<div class="titles-row">
+							<div class="card-body">
+								<div class="card-meta">
+									<span class="card-tag">{achievement.tag}</span>
+									<span class="card-line" aria-hidden="true"></span>
+								</div>
+								<h3>{achievement.title}</h3>
+								<p>{achievement.description}</p>
 							</div>
-							<h3>{achievement.title}</h3>
-							<p>{achievement.description}</p>
+							{#if achievement.classes}
+								<div class="title-classes">
+									{#each achievement.classes as spec}
+										<span
+											class="title-class"
+											class:title-class--main={spec.main}
+											style="--class-color: {spec.color}"
+										>
+											<span class="title-class-dot" aria-hidden="true"></span>
+											<span class="title-class-name">{spec.name}</span>
+											{#if spec.main}
+												<span class="title-class-badge">Main</span>
+											{/if}
+										</span>
+									{/each}
+								</div>
+							{/if}
+							<div class="card-metric" aria-label="{achievement.metric} {achievement.metricLabel}">
+								<span class="card-metric-value">{achievement.metric}</span>
+								<span class="card-metric-label">{achievement.metricLabel}</span>
+							</div>
 						</div>
-						<div class="card-metric" aria-label="{achievement.metric} {achievement.metricLabel}">
-							<span class="card-metric-value">{achievement.metric}</span>
-							<span class="card-metric-label">{achievement.metricLabel}</span>
-						</div>
+						{#if achievement.tag === 'Titles'}
+							<div class="title-seasons">
+								<div class="title-seasons-header">
+									<div class="title-seasons-heading">
+										<p class="title-seasons-label">Rank 1 seasons</p>
+										<span class="title-seasons-count"
+											>{seasonCountLabel(totalRankOneCount(RANK_ONE_SEASONS))} total</span
+										>
+									</div>
+									<div class="title-seasons-legend" aria-label="Classes">
+										{#each RANK_ONE_CLASS_LEGEND as item}
+											<span class="title-seasons-legend-item" style="--class-color: {item.color}">
+												<span class="title-seasons-legend-dot" aria-hidden="true"></span>
+												{item.name}
+											</span>
+										{/each}
+									</div>
+								</div>
+								<ol class="title-seasons-grid">
+									{#each RANK_ONE_SEASONS as season}
+										<li
+											class="title-season"
+											style="--class-color: {rankOneClassColor(season.className)}"
+										>
+											<span class="title-season-tag">{formatSeasonNumber(season.season)}</span>
+											<span class="title-season-name-wrap">
+												<span class="title-season-name">{season.name}</span>
+												{#if (season.count ?? 1) > 1}
+													<span
+														class="title-season-mult"
+														aria-label="{season.count} rank 1 titles on {season.className}"
+														>{season.count}×</span
+													>
+												{/if}
+											</span>
+											<span class="title-season-class">{season.className}</span>
+										</li>
+									{/each}
+								</ol>
+							</div>
+						{/if}
 					</article>
 				{/each}
 			</div>
@@ -289,49 +346,8 @@
 		background: var(--purple-glow);
 	}
 
-	.hero-achievements {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		pointer-events: none;
-		mask-image: linear-gradient(90deg, transparent 38%, rgba(0, 0, 0, 0.45) 55%, black 75%);
-		-webkit-mask-image: linear-gradient(
-			90deg,
-			transparent 38%,
-			rgba(0, 0, 0, 0.45) 55%,
-			black 75%
-		);
-	}
-
-	.hero-achievement {
-		position: absolute;
-		left: var(--x);
-		top: var(--y);
-		display: block;
-		width: clamp(10rem, 22vw, 18rem);
-		opacity: var(--o);
-		transform: translate(-50%, -50%) rotate(var(--r)) scale(var(--s));
-	}
-
-	.hero-achievement img {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
-
-	.hero-achievement::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: var(--purple-light);
-		opacity: 0.13;
-		mix-blend-mode: hue;
-		pointer-events: none;
-	}
-
 	.hero-inner {
 		position: relative;
-		z-index: 2;
 	}
 
 	.badge {
@@ -698,6 +714,11 @@
 		padding: 1.75rem 2rem;
 	}
 
+	.achievement-card--wide.achievement-card--titles {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
 	.achievement-card:hover {
 		border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 		transform: translateY(-4px);
@@ -781,6 +802,229 @@
 	.achievement-card--wide .card-metric {
 		padding-left: 1.5rem;
 		border-left: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.achievement-card--titles {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+	}
+
+	.titles-row {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 1.5rem;
+		width: 100%;
+		flex: 1;
+	}
+
+	.achievement-card--wide .titles-row {
+		flex-direction: row;
+		align-items: center;
+		gap: 1.75rem 2rem;
+	}
+
+	.title-classes {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		flex-shrink: 0;
+		max-width: 15rem;
+		padding: 0.75rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.title-class {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding: 0.45rem 0.7rem;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		color: #eceaf4;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(8, 6, 14, 0.45);
+		transition:
+			border-color 0.25s ease,
+			background 0.25s ease;
+	}
+
+	.title-class--main {
+		border-color: color-mix(in srgb, var(--class-color) 45%, transparent);
+		background: color-mix(in srgb, var(--class-color) 10%, rgba(8, 6, 14, 0.55));
+	}
+
+	.achievement-card--titles:hover .title-class {
+		border-color: color-mix(in srgb, var(--class-color) 35%, transparent);
+	}
+
+	.title-class-dot {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 50%;
+		background: var(--class-color);
+		box-shadow: 0 0 8px color-mix(in srgb, var(--class-color) 55%, transparent);
+		flex-shrink: 0;
+	}
+
+	.title-class-badge {
+		padding: 0.15rem 0.4rem;
+		font-size: 0.625rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--class-color);
+		background: color-mix(in srgb, var(--class-color) 14%, transparent);
+		border-radius: 0.25rem;
+	}
+
+	.title-seasons {
+		position: relative;
+		z-index: 1;
+		margin-top: 1.5rem;
+		padding: 1.1rem 1.15rem 1.15rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.title-seasons-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 0.85rem 1.5rem;
+		margin-bottom: 1rem;
+		padding-bottom: 0.85rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.title-seasons-heading {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.title-seasons-label {
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: #6b6678;
+	}
+
+	.title-seasons-count {
+		font-family: 'Syne', sans-serif;
+		font-size: 0.875rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--purple-light);
+	}
+
+	.title-seasons-legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 0.85rem;
+	}
+
+	.title-seasons-legend-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.6875rem;
+		font-weight: 500;
+		color: #8b8699;
+	}
+
+	.title-seasons-legend-dot {
+		width: 0.4rem;
+		height: 0.4rem;
+		border-radius: 50%;
+		background: var(--class-color);
+		flex-shrink: 0;
+	}
+
+	.title-seasons-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 0.35rem 1.25rem;
+		list-style: none;
+		counter-reset: none;
+	}
+
+	.title-season {
+		display: grid;
+		grid-template-columns: 2.35rem minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 0.45rem;
+		min-width: 0;
+		padding: 0.4rem 0.45rem;
+		border-radius: 0.5rem;
+		transition: background 0.2s ease;
+	}
+
+	.title-season:hover {
+		background: rgba(255, 255, 255, 0.035);
+	}
+
+	.title-season-tag {
+		font-family: 'Syne', sans-serif;
+		font-size: 0.625rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		color: #6b6678;
+		letter-spacing: 0.02em;
+	}
+
+	.title-season-name-wrap {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		min-width: 0;
+	}
+
+	.title-season-name {
+		font-size: 0.8125rem;
+		font-weight: 500;
+		line-height: 1.3;
+		color: #eceaf4;
+		letter-spacing: -0.01em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 0;
+	}
+
+	.title-season-mult {
+		flex-shrink: 0;
+		padding: 0.1rem 0.35rem;
+		border-radius: 999px;
+		font-family: 'Syne', sans-serif;
+		font-size: 0.625rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		line-height: 1.2;
+		color: var(--class-color);
+		background: color-mix(in srgb, var(--class-color) 18%, transparent);
+		border: 1px solid color-mix(in srgb, var(--class-color) 35%, transparent);
+	}
+
+	.title-season-class {
+		flex-shrink: 0;
+		max-width: 4.5rem;
+		font-size: 0.625rem;
+		font-weight: 600;
+		color: var(--class-color);
+		text-align: right;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.card-metric-value {
@@ -885,15 +1129,6 @@
 			padding: 5rem 0 4rem;
 		}
 
-		.hero-achievements {
-			mask-image: linear-gradient(90deg, transparent 50%, black 88%);
-			-webkit-mask-image: linear-gradient(90deg, transparent 50%, black 88%);
-		}
-
-		.hero-achievement {
-			width: clamp(8rem, 34vw, 14rem);
-		}
-
 		h1 {
 			font-size: clamp(2.25rem, 9vw, 3.25rem);
 		}
@@ -949,6 +1184,26 @@
 			border-left: none;
 			border-top: 1px solid rgba(255, 255, 255, 0.06);
 			text-align: left;
+		}
+
+		.achievement-card--titles .titles-row {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.achievement-card--titles .title-classes {
+			max-width: none;
+			width: 100%;
+		}
+
+		.title-seasons-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.title-seasons-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.35rem 0.85rem;
 		}
 
 		.card-metric {
