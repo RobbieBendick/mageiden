@@ -490,7 +490,7 @@ export const mageLayouts: Record<string, TalentLayoutRow[]> = {
       row: 4,
       col: 2,
       maxRank: 3,
-      icon: 'mace stun effect',
+      icon: 'frost channeling',
       spellId: 11160,
     },
     {

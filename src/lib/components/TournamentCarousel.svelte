@@ -1,7 +1,12 @@
 <script lang="ts">
-	export type TournamentSlide = {
+	export type TournamentSlideImage = {
 		src: string;
 		alt: string;
+		caption?: string;
+	};
+
+	export type TournamentSlide = {
+		images: TournamentSlideImage[];
 		href?: string;
 		label: string;
 	};
@@ -46,6 +51,7 @@
 			{#each slides as slide, i}
 				<div
 					class="carousel-slide"
+					class:carousel-slide--multi={slide.images.length > 1}
 					aria-hidden={i !== active}
 					id="tournament-slide-{i}"
 				>
@@ -57,10 +63,38 @@
 							rel="noopener noreferrer"
 							tabindex={i === active ? 0 : -1}
 						>
-							<img src={slide.src} alt={slide.alt} width="960" height="540" loading="lazy" />
+							<div class="carousel-slide-images">
+								{#each slide.images as image, imageIndex}
+									<figure
+										class="carousel-slide-figure"
+										class:carousel-slide-figure--base={slide.images.length > 1 && imageIndex === 0}
+										class:carousel-slide-figure--overlay={slide.images.length > 1 &&
+											imageIndex > 0}
+									>
+										<img src={image.src} alt={image.alt} width="960" height="540" loading="lazy" />
+										{#if image.caption}
+											<figcaption class="carousel-slide-caption">{image.caption}</figcaption>
+										{/if}
+									</figure>
+								{/each}
+							</div>
 						</a>
 					{:else}
-						<img src={slide.src} alt={slide.alt} width="960" height="540" loading="lazy" />
+						<div class="carousel-slide-images">
+							{#each slide.images as image, imageIndex}
+								<figure
+									class="carousel-slide-figure"
+									class:carousel-slide-figure--base={slide.images.length > 1 && imageIndex === 0}
+									class:carousel-slide-figure--overlay={slide.images.length > 1 &&
+										imageIndex > 0}
+								>
+									<img src={image.src} alt={image.alt} width="960" height="540" loading="lazy" />
+									{#if image.caption}
+										<figcaption class="carousel-slide-caption">{image.caption}</figcaption>
+									{/if}
+								</figure>
+							{/each}
+						</div>
 					{/if}
 				</div>
 			{/each}
@@ -134,6 +168,7 @@
 
 	.carousel-track {
 		display: flex;
+		align-items: flex-start;
 		transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 		transform: translateX(calc(var(--active) * -100%));
 	}
@@ -149,6 +184,12 @@
 		min-width: 0;
 	}
 
+	.carousel-slide[aria-hidden='true'] {
+		height: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
 	.carousel-slide-link {
 		display: block;
 		transition: opacity 0.2s ease;
@@ -158,11 +199,87 @@
 		opacity: 0.92;
 	}
 
-	.carousel-slide img {
+	.carousel-slide-images {
+		display: block;
+	}
+
+	.carousel-slide-figure {
+		margin: 0;
+		background: #0a0812;
+	}
+
+	.carousel-slide:not(.carousel-slide--multi) .carousel-slide-figure img {
 		display: block;
 		width: 100%;
 		height: auto;
 		vertical-align: middle;
+	}
+
+	.carousel-slide--multi .carousel-slide-images {
+		position: relative;
+	}
+
+	.carousel-slide--multi .carousel-slide-figure--base {
+		position: relative;
+	}
+
+	.carousel-slide--multi .carousel-slide-figure--base img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.carousel-slide--multi .carousel-slide-figure--overlay {
+		position: absolute;
+		right: 0.85rem;
+		bottom: 0.85rem;
+		z-index: 1;
+		width: min(44%, 15rem);
+		overflow: visible;
+		border-radius: 0.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		box-shadow:
+			0 16px 40px rgba(0, 0, 0, 0.55),
+			0 0 0 1px rgba(0, 0, 0, 0.2);
+	}
+
+	.carousel-slide--multi .carousel-slide-figure--overlay img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 0.5rem;
+	}
+
+	.carousel-slide-caption {
+		padding: 0.5rem 0.75rem;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #8b8699;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.carousel-slide--multi .carousel-slide-figure--overlay .carousel-slide-caption {
+		position: absolute;
+		top: -1.2rem;
+		left: 1.35rem;
+		padding: 0.2rem 0.45rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 0.25rem;
+		background: rgba(8, 6, 14, 0.82);
+		backdrop-filter: blur(8px);
+	}
+
+	.carousel-slide--multi .carousel-slide-figure--base .carousel-slide-caption {
+		position: absolute;
+		top: 0.65rem;
+		left: 0.65rem;
+		padding: 0.2rem 0.45rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 0.25rem;
+		background: rgba(8, 6, 14, 0.72);
+		backdrop-filter: blur(8px);
 	}
 
 	.carousel-footer {
@@ -264,5 +381,13 @@
 
 	.carousel-dot:hover:not(.carousel-dot--active) {
 		background: rgba(167, 139, 250, 0.45);
+	}
+
+	@media (max-width: 720px) {
+		.carousel-slide--multi .carousel-slide-figure--overlay {
+			right: 0.6rem;
+			bottom: 0.6rem;
+			width: min(52%, 11rem);
+		}
 	}
 </style>

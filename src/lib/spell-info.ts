@@ -4,6 +4,7 @@ export const WOW_ICON_MEDIUM_BASE = 'https://wow.zamimg.com/images/wow/icons/med
 
 /** Spell icon filenames keyed by normalized spell name (mage talents + shared lookups). */
 const SPELL_ICON_MAP: Record<string, string> = {
+	'frost channeling': 'spell_frost_stun.jpg',
 	'arcane torrent': 'spell_shadow_teleport.jpg',
 	'master of deception': 'spell_shadow_charm.jpg',
 	'mana burn': 'spell_shadow_manaburn.jpg',
@@ -41,6 +42,7 @@ const SPELL_ICON_MAP: Record<string, string> = {
 	'arcane focus': 'spell_holy_devotion.jpg',
 	'arcane missiles': 'spell_nature_starfall.jpg',
 	'wand specialization': 'inv_wand_01.jpg',
+	'w and specialization': 'inv_wand_01.jpg',
 	'mind mastery': 'spell_arcane_mindmastery.jpg',
 	'magic absorption': 'spell_nature_astralrecalgroup.jpg',
 	'arcane fortitude': 'spell_arcane_arcaneresilience.jpg',

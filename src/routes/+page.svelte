@@ -22,20 +22,45 @@
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
 
 	const rankOneMetric = `${RANK_ONE_TITLE_COUNT}×`;
-	const rankOneWord = englishCount(RANK_ONE_TITLE_COUNT, true);
+	const rankOneWord = englishCount(RANK_ONE_TITLE_COUNT);
+	const rankOneWordCap = englishCount(RANK_ONE_TITLE_COUNT, true);
 
 	const tournamentSlides: TournamentSlide[] = [
 		{
-			src: `${base}/images/tournament-screenshot.png`,
-			alt: 'Tournament results: Super Frogs 1st place with Mageiden on the roster',
+			label: 'Spring NA Cup 1',
 			href: 'https://www.esportsearnings.com/tournaments/30588-spring-na-cup-1',
-			label: 'Spring NA Cup 1'
+			images: [
+				{
+					src: `${base}/images/tournament-screenshot.png`,
+					alt: 'Tournament results: Super Frogs 1st place with Mageiden on the roster'
+				}
+			]
 		},
 		{
-			src: `${base}/images/tournament-screenshot-2.png`,
-			alt: 'Tournament results: WOW NA Arena Cup 4',
+			label: 'WOW NA Arena Cup 4',
 			href: 'https://www.esportsearnings.com/tournaments/50632-wow-na-arena-cup-4',
-			label: 'WOW NA Arena Cup 4'
+			images: [
+				{
+					src: `${base}/images/tournament-screenshot-2.png`,
+					alt: 'Tournament results: WOW NA Arena Cup 4'
+				}
+			]
+		},
+		{
+			label: 'NA Cataclysm Classic Arena Finals',
+			href: 'https://raider.io/events/cataclysm-classic-tournament/brackets/na-cataclysm-classic-arena-finals',
+			images: [
+				{
+					src: `${base}/images/tournament-screenshot-3-1.png`,
+					alt: 'Tournament bracket',
+					caption: 'Bracket'
+				},
+				{
+					src: `${base}/images/tournament-screenshot-3-2.png`,
+					alt: 'Tournament team screenshot with Mageiden on the roster',
+					caption: 'Team'
+				}
+			]
 		}
 	];
 
@@ -53,9 +78,9 @@
 			accent: 'var(--purple)'
 		},
 		{
-			value: 'R1',
-			label: 'Peak bracket',
-			hint: 'Still competing at the top',
+			value: String(RANK_ONE_CLASS_LEGEND.length),
+			label: 'Classes with R1',
+			hint: 'Mage, Rogue, Warlock, and Ele Shaman',
 			accent: '#fcd34d'
 		}
 	];
@@ -64,27 +89,30 @@
 		{
 			tag: 'Ladder',
 			metric: '3,200+',
-			metricLabel: 'rating peak',
-			title: 'Rank 1 cutoff season',
-			description: 'Peak rating, bracket played, and where you landed when cutoffs dropped.',
+			metricLabel: '#1 ranked on ladder',
+			title: 'Peak rating',
+			description:
+				'Season after season at the top of the ladder.',
 			accent: 'var(--purple-light)',
 			wide: true
 		},
 		{
 			tag: 'Tournament',
 			metric: '1st',
-			metricLabel: 'finals',
-			title: 'Bracket win',
-			description: 'Scoreline, path through the bracket, and teams you ran through.',
+			metricLabel: 'AWC cups',
+			title: 'Tournament wins',
+			description:
+				'Multiple cup wins and deep bracket runs with Super Frogs, Union, and other teams, including a finals win over Method Orange.',
 			accent: '#fcd34d',
 			wide: false
 		},
 		{
 			tag: 'Coaching',
-			metric: '0 → R1',
-			metricLabel: 'client arc',
+			metric: '1,500 → Glad',
+			metricLabel: 'client climb',
 			title: 'Rating turnaround',
-			description: 'Starting bracket, timeline, and the gap you closed together.',
+			description:
+				'Helped countless players reach gladiator & R1 across every expansion. Learn win conditions, positioning, and the strats vs every specific matchup.',
 			accent: '#4ade80',
 			wide: false
 		},
@@ -93,7 +121,7 @@
 			metric: rankOneMetric,
 			metricLabel: 'rank one',
 			title: 'Stacked seasons',
-			description: `${rankOneWord} titles across expansions and metas. Rank 1 on four classes, with Mage as the main.`,
+			description: `${rankOneWordCap} titles across expansions and metas. Rank 1 on four classes, with Mage as the main.`,
 			accent: 'var(--purple)',
 			wide: true,
 			classes: [
@@ -128,23 +156,25 @@
 			</h1>
 
 			<p class="hero-copy">
-				{rankOneWord} Rank 1 titles. Five hundred clients coached. I work with players at every
-				level, from first steps in arena to partners chasing their own title. I know how bad the
-				LFG grind can be. Same focus, every session.
+				With {rankOneWord} Rank 1 titles and over five hundred clients coached, I work with players
+				at every level, from first steps in arena to partners chasing a title of their own. I know
+				how bad the LFG grind can be, so skip the headache and start improving today.
 			</p>
 
 			<div class="hero-actions">
-				<div class="hero-buttons">
+				<div class="hero-cta-primary">
 					<a
 						href={DISCORD_URL}
 						class="cta cta--primary"
 						target="_blank"
 						rel="noopener noreferrer"
 					>Work with me</a>
+					<span class="cta-note">Create a ticket order on Discord</span>
+				</div>
+				<div class="hero-armory-buttons">
 					<a href="{base}/armory/alliance" class="cta cta--ghost cta--alliance">Alliance Armory</a>
 					<a href="{base}/armory/horde" class="cta cta--ghost cta--horde">Horde Armory</a>
 				</div>
-				<span class="cta-note">Create a ticket order on Discord</span>
 			</div>
 		</div>
 	</section>
@@ -174,8 +204,8 @@
 				<p class="section-eyebrow">Track record</p>
 				<h2>Proof, not promises</h2>
 				<p class="section-desc">
-					Ratings climbed, brackets won, clients pushed. Swap in your numbers and keep the
-					layout.
+					{rankOneWordCap} rank 1 titles, AWC cup wins, and five hundred clients coached. Ladder,
+					tournaments, and coaching, laid out below.
 				</p>
 			</div>
 
@@ -301,22 +331,57 @@
 				{/each}
 			</div>
 
+			<article class="network-panel" style="--accent: #6ee7b7">
+				<div class="network-panel-sheen" aria-hidden="true"></div>
+				<div class="network-panel-body">
+					<div class="network-panel-copy">
+						<div class="card-meta">
+							<span class="card-tag">Roster</span>
+							<span class="card-line" aria-hidden="true"></span>
+						</div>
+						<h3>Pull from a deep player network</h3>
+						<p>
+							Need partners for 2s, 3s, or 5s? If my class isn't the right fit, or you want help
+							from another class, I pull from an extensive roster of top tier players I trust.
+						</p>
+					</div>
+					<ul class="network-panel-features">
+						<li class="network-feature">
+							<span class="network-feature-label">2v2</span>
+							<span class="network-feature-text">A partner when my class isn't the right fit</span>
+						</li>
+						<li class="network-feature">
+							<span class="network-feature-label">3v3</span>
+							<span class="network-feature-text">Arena partners when you need a third</span>
+						</li>
+						<li class="network-feature">
+							<span class="network-feature-label">5v5</span>
+							<span class="network-feature-text">Full teams for larger brackets</span>
+						</li>
+						<li class="network-feature">
+							<span class="network-feature-label">Fill</span>
+							<span class="network-feature-text">Coaching or play from another class</span>
+						</li>
+					</ul>
+				</div>
+			</article>
+
 			<div class="tournament-proof">
 				<div class="tournament-copy">
 					<p class="section-eyebrow">Tournament wins</p>
 					<h3>1st place on the biggest stage</h3>
 					<p class="tournament-intro">
-						Won with Super Frogs, beating Method Orange in the final and running through
-						teams stacked with the most decorated names in arena.
+						Won one of many AWC cups with Super Frogs, Union, and other teams as well, beating Method
+						Orange in the final and running through teams stacked with the most decorated names
+						in arena.
 					</p>
 				</div>
 
 				<div class="tournament-media">
 					<TournamentCarousel slides={tournamentSlides} />
 					<p class="tournament-caption">
-						Competed with and against the best players in the game, including Cdew, Snutz, Pikaboo,
-						and the rest of the Method roster. Same lobbies, same pressure, same level of
-						play you see at the top of the ladder.
+						Brackets stacked with Chan, Wealthyman, Snutz, Kubzy, Pikaboo, Wizk, Paypay, Cdew, and the rest of Method.
+						No easy paths, no weak finals. That's where my coaching comes from.
 					</p>
 				</div>
 			</div>
@@ -327,7 +392,7 @@
 		<div class="footer-glow"></div>
 		<div class="container footer-inner">
 			<h2>Need a player that hits?</h2>
-			<p>Hours in LFG looking for a partner, wrong fit most of the time. Arena coaching for any skill level. One message away on Discord.</p>
+			<p>You've spent enough time in LFG with the wrong fit. Skip the headache and start improving today. One message away on Discord.</p>
 			<a
 				href={DISCORD_URL}
 				class="cta cta--ghost"
@@ -461,15 +526,22 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 1rem;
+		gap: 1.25rem;
 		margin-top: 2.5rem;
 	}
 
-	.hero-buttons {
+	.hero-cta-primary {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.65rem;
+	}
+
+	.hero-armory-buttons {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 1.25rem;
+		gap: 0.85rem;
 	}
 
 	.cta {
@@ -718,6 +790,116 @@
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 1rem;
 		margin-top: 3rem;
+	}
+
+	.network-panel {
+		position: relative;
+		margin-top: 1rem;
+		padding: 1.75rem 2rem;
+		overflow: hidden;
+		border-radius: 1.25rem;
+		border: 1px solid rgba(255, 255, 255, 0.07);
+		background:
+			radial-gradient(ellipse 90% 100% at 0% 50%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%),
+			linear-gradient(160deg, rgba(22, 18, 36, 0.92), rgba(8, 6, 14, 0.98));
+		backdrop-filter: blur(16px);
+		transition:
+			border-color 0.3s ease,
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+		animation: card-in 0.55s ease backwards;
+		animation-delay: 320ms;
+	}
+
+	.network-panel:hover {
+		border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+		transform: translateY(-3px);
+		box-shadow:
+			0 20px 50px rgba(0, 0, 0, 0.35),
+			0 0 48px color-mix(in srgb, var(--accent) 14%, transparent);
+	}
+
+	.network-panel-sheen {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			125deg,
+			color-mix(in srgb, var(--accent) 10%, transparent) 0%,
+			transparent 45%,
+			transparent 100%
+		);
+		pointer-events: none;
+	}
+
+	.network-panel-body {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+		gap: 2rem 2.5rem;
+		align-items: center;
+	}
+
+	.network-panel-copy h3 {
+		font-family: 'Syne', sans-serif;
+		font-size: clamp(1.25rem, 3vw, 1.5rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		color: #eceaf4;
+	}
+
+	.network-panel-copy p {
+		margin-top: 0.65rem;
+		max-width: 42ch;
+		font-size: 0.9375rem;
+		line-height: 1.65;
+		color: #7a7589;
+	}
+
+	.network-panel-features {
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+		list-style: none;
+	}
+
+	.network-feature {
+		display: grid;
+		grid-template-columns: 3.25rem minmax(0, 1fr);
+		align-items: center;
+		gap: 0.85rem;
+		padding: 0.75rem 0.9rem;
+		border-radius: 0.75rem;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.03);
+		transition:
+			border-color 0.25s ease,
+			background 0.25s ease;
+	}
+
+	.network-panel:hover .network-feature {
+		border-color: color-mix(in srgb, var(--accent) 22%, transparent);
+	}
+
+	.network-feature-label {
+		display: grid;
+		place-items: center;
+		height: 2rem;
+		border-radius: 0.5rem;
+		font-family: 'Syne', sans-serif;
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 14%, transparent);
+		border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+	}
+
+	.network-feature-text {
+		font-size: 0.8125rem;
+		font-weight: 500;
+		line-height: 1.4;
+		color: #b8b4c4;
 	}
 
 	.achievement-card {
@@ -1252,6 +1434,15 @@
 
 		.achievement-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.network-panel {
+			padding: 1.35rem 1.25rem;
+		}
+
+		.network-panel-body {
+			grid-template-columns: 1fr;
+			gap: 1.35rem;
 		}
 
 		.achievement-card--wide {

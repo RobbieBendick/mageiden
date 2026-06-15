@@ -124,7 +124,8 @@ export const RANK_ONE_SEASONS_CLASSIC: RankOneSeason[] = [
 		season: 5,
 		name: 'Deadly Gladiator',
 		classes: [{ className: 'Ele Shaman', count: 2 }]
-	}
+	},
+	{ era: 'classic', season: 15, name: 'Cataclysmic Gladiator', classes: [{ className: 'Mage' }] }
 ];
 
 export const RANK_ONE_SEASONS: RankOneSeason[] = [
