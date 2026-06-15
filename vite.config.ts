@@ -21,7 +21,7 @@ export default defineConfig({
 				base: basePath ? (basePath as `/${string}`) : ''
 			},
 			prerender: {
-				// Allow deploy when mage env vars are missing (landing page only).
+				// Allow deploy when armory env vars are missing (landing page only).
 				handleUnseenRoutes: 'ignore'
 			}
 		})

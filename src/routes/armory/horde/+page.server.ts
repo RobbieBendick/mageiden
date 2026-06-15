@@ -1,14 +1,14 @@
 import { base } from '$app/paths';
-import { getHordeMage } from '$lib/server/armory-mages';
+import { getHordePlayer } from '$lib/server/featured-players';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const mage = getHordeMage();
+	const player = getHordePlayer();
 
-	if (!mage) {
+	if (!player) {
 		throw redirect(303, `${base}/`);
 	}
 
-	throw redirect(303, `${base}${mage.href}`);
+	throw redirect(303, `${base}${player.href}`);
 };

@@ -186,8 +186,8 @@
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: var(--mage);
-		box-shadow: 0 0 10px var(--mage);
+		background: var(--purple-light);
+		box-shadow: 0 0 10px var(--purple-light);
 		animation: pulse 2.5s ease-in-out infinite;
 	}
 
@@ -270,7 +270,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.14em;
-		color: var(--mage);
+		color: var(--purple-light);
 	}
 
 	.section-header h2 {

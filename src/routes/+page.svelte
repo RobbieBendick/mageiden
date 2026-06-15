@@ -5,31 +5,62 @@
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
 
 	const stats = [
-		{ value: '20×', label: 'Rank 1 titles', accent: 'var(--purple-light)' },
-		{ value: '500+', label: 'Clients served', accent: 'var(--mage)' },
-		{ value: 'R1', label: 'Arena rank', accent: '#fcd34d' }
+		{
+			value: '20×',
+			label: 'Rank 1 titles',
+			hint: 'Multiple metas, same result',
+			accent: 'var(--purple-light)'
+		},
+		{
+			value: '500+',
+			label: 'Clients coached',
+			hint: 'Every bracket, every skill level',
+			accent: 'var(--purple)'
+		},
+		{
+			value: 'R1',
+			label: 'Peak bracket',
+			hint: 'Still competing at the top',
+			accent: '#fcd34d'
+		}
 	];
 
 	const achievements = [
 		{
-			tag: 'Arena',
-			title: 'Your best season',
-			description: 'Drop a rating peak, cutoff, or season highlight here.'
+			tag: 'Ladder',
+			metric: '3,200+',
+			metricLabel: 'rating peak',
+			title: 'Rank 1 cutoff season',
+			description: 'Peak rating, bracket played, and where you landed when cutoffs dropped.',
+			accent: 'var(--purple-light)',
+			wide: true
 		},
 		{
 			tag: 'Tournament',
-			title: 'Your biggest win',
-			description: 'A tournament result, ladder push, or bracket run.'
+			metric: '1st',
+			metricLabel: 'finals',
+			title: 'Bracket win',
+			description: 'Scoreline, path through the bracket, and teams you ran through.',
+			accent: '#fcd34d',
+			wide: false
 		},
 		{
 			tag: 'Coaching',
-			title: 'Client turnaround',
-			description: 'A before/after story: stuck in rival range to gladiator contention.'
+			metric: '0 → R1',
+			metricLabel: 'client arc',
+			title: 'Rating turnaround',
+			description: 'Starting bracket, timeline, and the gap you closed together.',
+			accent: '#4ade80',
+			wide: false
 		},
 		{
-			tag: 'Legacy',
-			title: 'Another R1 season',
-			description: 'Stack another title onto the twenty.'
+			tag: 'Titles',
+			metric: '20×',
+			metricLabel: 'rank one',
+			title: 'Stacked seasons',
+			description: 'Expansions, patches, and metas where the title actually landed.',
+			accent: 'var(--purple)',
+			wide: true
 		}
 	];
 </script>
@@ -47,7 +78,7 @@
 		<div class="container hero-inner">
 			<div class="badge">
 				<span class="badge-dot"></span>
-				20× Rank 1 <span class="mage-word">Mage</span>
+				20× Rank 1
 			</div>
 
 			<h1>
@@ -69,28 +100,29 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>Work with me</a>
-				<a href="{base}/armory/alliance" class="cta cta--ghost cta--alliance">
-					<span>Alliance</span>
-					<span class="mage-word">Mage</span>
-				</a>
-				<a href="{base}/armory/horde" class="cta cta--ghost cta--horde">
-					<span>Horde</span>
-					<span class="mage-word">Mage</span>
-				</a>
+				<a href="{base}/armory/alliance" class="cta cta--ghost cta--alliance">Alliance Armory</a>
+				<a href="{base}/armory/horde" class="cta cta--ghost cta--horde">Horde Armory</a>
 				<span class="cta-note">Create a ticket order on Discord</span>
 			</div>
 		</div>
 	</section>
 
 	<section class="stats">
-		<div class="stats-bg"></div>
-		<div class="container stats-inner">
-			{#each stats as stat}
-				<article class="stat-card">
-					<span class="stat-value" style="--accent: {stat.accent}">{stat.value}</span>
-					<span class="stat-label">{stat.label}</span>
-				</article>
-			{/each}
+		<div class="container stats-wrap">
+			<div class="stats-panel">
+				{#each stats as stat, i}
+					<article
+						class="stat-cell"
+						class:stat-cell--featured={i === 0}
+						style="--accent: {stat.accent}; --delay: {i * 70}ms"
+					>
+						<div class="stat-cell-glow" aria-hidden="true"></div>
+						<span class="stat-value">{stat.value}</span>
+						<span class="stat-label">{stat.label}</span>
+						<span class="stat-hint">{stat.hint}</span>
+					</article>
+				{/each}
+			</div>
 		</div>
 	</section>
 
@@ -101,20 +133,31 @@
 				<p class="section-eyebrow">Track record</p>
 				<h2>Proof, not promises</h2>
 				<p class="section-desc">
-					Swap these in with your ratings, titles, and client wins. The layout stays. The
-					bragging rights are yours.
+					Ratings climbed, brackets won, clients pushed — swap in your numbers and keep the
+					layout.
 				</p>
 			</div>
 
 			<div class="achievement-grid">
 				{#each achievements as achievement, i}
-					<article class="achievement-card" style="--delay: {i * 60}ms">
-						<div class="card-top">
-							<span class="card-index">0{i + 1}</span>
-							<span class="card-tag">{achievement.tag}</span>
+					<article
+						class="achievement-card"
+						class:achievement-card--wide={achievement.wide}
+						style="--accent: {achievement.accent}; --delay: {i * 80}ms"
+					>
+						<div class="card-sheen" aria-hidden="true"></div>
+						<div class="card-body">
+							<div class="card-meta">
+								<span class="card-tag">{achievement.tag}</span>
+								<span class="card-line" aria-hidden="true"></span>
+							</div>
+							<h3>{achievement.title}</h3>
+							<p>{achievement.description}</p>
 						</div>
-						<h3>{achievement.title}</h3>
-						<p>{achievement.description}</p>
+						<div class="card-metric" aria-label="{achievement.metric} {achievement.metricLabel}">
+							<span class="card-metric-value">{achievement.metric}</span>
+							<span class="card-metric-label">{achievement.metricLabel}</span>
+						</div>
 					</article>
 				{/each}
 			</div>
@@ -150,7 +193,7 @@
 	<section class="footer-cta">
 		<div class="footer-glow"></div>
 		<div class="container footer-inner">
-			<h2>Need a <span class="mage-word">mage</span> that hits?</h2>
+			<h2>Need a player that hits?</h2>
 			<p>Hours in LFG looking for a partner, wrong fit most of the time. Arena coaching for any skill level. One message away on Discord.</p>
 			<a
 				href={DISCORD_URL}
@@ -166,11 +209,6 @@
 	.container {
 		width: min(72rem, 100% - 3rem);
 		margin-inline: auto;
-	}
-
-	:global(.mage-word) {
-		color: var(--mage);
-		font-weight: 600;
 	}
 
 	/* ── Hero ── */
@@ -214,7 +252,7 @@
 		height: 22rem;
 		top: 20%;
 		right: -6rem;
-		background: var(--mage-muted);
+		background: var(--purple-glow);
 	}
 
 	.hero-inner {
@@ -240,8 +278,8 @@
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: var(--mage);
-		box-shadow: 0 0 10px var(--mage);
+		background: var(--purple-light);
+		box-shadow: 0 0 10px var(--purple-light);
 		animation: pulse 2.5s ease-in-out infinite;
 	}
 
@@ -270,7 +308,7 @@
 	}
 
 	.title-line--accent {
-		background: linear-gradient(135deg, var(--purple-pale) 0%, var(--purple) 45%, var(--mage) 100%);
+		background: linear-gradient(135deg, var(--purple-pale) 0%, var(--purple) 45%, var(--purple-light) 100%);
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
@@ -350,60 +388,121 @@
 	/* ── Stats ── */
 	.stats {
 		position: relative;
-		padding: 0 0 5rem;
-		margin-top: -2rem;
+		padding: 0 0 4.5rem;
+		margin-top: -3.5rem;
+		z-index: 2;
 	}
 
-	.stats-bg {
-		position: absolute;
-		inset: 0;
-		background:
-			linear-gradient(90deg, transparent, var(--purple-muted) 50%, transparent),
-			linear-gradient(180deg, transparent, #08060e 30%, #08060e 70%, transparent);
-		border-block: 1px solid rgba(167, 139, 250, 0.1);
-	}
-
-	.stats-inner {
+	.stats-wrap {
 		position: relative;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1.25rem;
-		padding-block: 3rem;
 	}
 
-	.stat-card {
+	.stats-panel {
+		display: grid;
+		grid-template-columns: 1.15fr 1fr 1fr;
+		gap: 0;
+		padding: 0.35rem;
+		border-radius: 1.35rem;
+		border: 1px solid rgba(167, 139, 250, 0.14);
+		background:
+			linear-gradient(180deg, rgba(18, 14, 30, 0.95), rgba(8, 6, 14, 0.98)),
+			radial-gradient(ellipse 80% 120% at 50% 0%, var(--purple-muted), transparent 60%);
+		box-shadow:
+			0 24px 60px rgba(0, 0, 0, 0.45),
+			0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+		backdrop-filter: blur(20px);
+	}
+
+	.stat-cell {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		gap: 0.35rem;
-		padding: 2rem 1.5rem;
-		background: rgba(12, 10, 20, 0.7);
-		border: 1px solid rgba(255, 255, 255, 0.06);
-		border-radius: 1rem;
-		backdrop-filter: blur(12px);
+		padding: 1.75rem 1.5rem 1.65rem;
+		overflow: hidden;
+		border-radius: 1.05rem;
 		transition:
-			border-color 0.2s ease,
-			transform 0.2s ease;
+			background 0.3s ease,
+			transform 0.3s ease;
+		animation: card-in 0.55s ease backwards;
+		animation-delay: var(--delay);
 	}
 
-	.stat-card:hover {
-		border-color: var(--purple-border);
-		transform: translateY(-3px);
+	.stat-cell:not(:last-child)::after {
+		content: '';
+		position: absolute;
+		top: 1.25rem;
+		right: 0;
+		bottom: 1.25rem;
+		width: 1px;
+		background: linear-gradient(
+			180deg,
+			transparent,
+			rgba(167, 139, 250, 0.18) 50%,
+			transparent
+		);
+	}
+
+	.stat-cell--featured {
+		padding: 2rem 1.75rem 1.85rem;
+	}
+
+	.stat-cell-glow {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			ellipse 90% 80% at 50% 100%,
+			color-mix(in srgb, var(--accent) 16%, transparent),
+			transparent 70%
+		);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+	}
+
+	.stat-cell:hover {
+		background: rgba(255, 255, 255, 0.02);
+		transform: translateY(-2px);
+	}
+
+	.stat-cell:hover .stat-cell-glow {
+		opacity: 1;
 	}
 
 	.stat-value {
+		position: relative;
+		z-index: 1;
 		font-family: 'Syne', sans-serif;
-		font-size: clamp(2.25rem, 6vw, 3rem);
-		font-weight: 700;
-		letter-spacing: -0.03em;
+		font-size: clamp(2.5rem, 6vw, 3.25rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: -0.04em;
+		font-variant-numeric: tabular-nums;
 		color: var(--accent);
+		text-shadow: 0 0 48px color-mix(in srgb, var(--accent) 30%, transparent);
+	}
+
+	.stat-cell--featured .stat-value {
+		font-size: clamp(2.75rem, 7vw, 3.75rem);
 	}
 
 	.stat-label {
+		position: relative;
+		z-index: 1;
+		margin-top: 0.15rem;
 		font-size: 0.8125rem;
-		font-weight: 500;
-		color: #7a7589;
+		font-weight: 600;
+		color: #eceaf4;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.1em;
+	}
+
+	.stat-hint {
+		position: relative;
+		z-index: 1;
+		font-size: 0.8125rem;
+		line-height: 1.5;
+		color: #6b6678;
 	}
 
 	/* ── Achievements ── */
@@ -412,7 +511,7 @@
 		overflow: hidden;
 		padding: 6rem 0;
 		background:
-			radial-gradient(ellipse 60% 50% at 80% 20%, var(--mage-muted), transparent),
+			radial-gradient(ellipse 60% 50% at 80% 20%, var(--purple-glow), transparent),
 			radial-gradient(ellipse 50% 40% at 10% 80%, var(--purple-muted), transparent),
 			#06050a;
 	}
@@ -438,7 +537,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.14em;
-		color: var(--mage);
+		color: var(--purple-light);
 	}
 
 	.section-header h2 {
@@ -458,64 +557,151 @@
 
 	.achievement-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1.25rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
 		margin-top: 3rem;
 	}
 
 	.achievement-card {
 		position: relative;
-		padding: 1.75rem;
-		background: linear-gradient(145deg, rgba(20, 16, 32, 0.9), rgba(10, 8, 18, 0.95));
-		border: 1px solid rgba(255, 255, 255, 0.06);
-		border-radius: 1rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 1.5rem;
+		min-height: 11.5rem;
+		padding: 1.5rem;
+		overflow: hidden;
+		border-radius: 1.25rem;
+		border: 1px solid rgba(255, 255, 255, 0.07);
+		background:
+			radial-gradient(ellipse 120% 80% at 100% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 55%),
+			linear-gradient(160deg, rgba(22, 18, 36, 0.92), rgba(8, 6, 14, 0.98));
+		backdrop-filter: blur(16px);
 		transition:
-			border-color 0.25s ease,
-			box-shadow 0.25s ease;
+			border-color 0.3s ease,
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+		animation: card-in 0.55s ease backwards;
+		animation-delay: var(--delay);
+	}
+
+	@keyframes card-in {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+	}
+
+	.achievement-card--wide {
+		grid-column: span 2;
+		flex-direction: row;
+		align-items: flex-end;
+		min-height: 10rem;
+		padding: 1.75rem 2rem;
 	}
 
 	.achievement-card:hover {
-		border-color: var(--purple-border);
-		box-shadow: 0 8px 40px var(--purple-glow);
+		border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+		transform: translateY(-4px);
+		box-shadow:
+			0 20px 50px rgba(0, 0, 0, 0.35),
+			0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent),
+			0 0 48px color-mix(in srgb, var(--accent) 18%, transparent);
 	}
 
-	.card-top {
+	.card-sheen {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			125deg,
+			color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+			transparent 42%,
+			transparent 100%
+		);
+		pointer-events: none;
+	}
+
+	.card-body {
+		position: relative;
+		z-index: 1;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.card-meta {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1.25rem;
-	}
-
-	.card-index {
-		font-family: 'Syne', sans-serif;
-		font-size: 0.75rem;
-		font-weight: 700;
-		color: #4a4558;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
 	}
 
 	.card-tag {
-		padding: 0.25rem 0.6rem;
+		padding: 0.3rem 0.65rem;
 		font-size: 0.6875rem;
 		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--purple-light);
-		background: var(--purple-muted);
-		border-radius: 0.25rem;
+		letter-spacing: 0.1em;
+		color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 12%, transparent);
+		border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+		border-radius: 999px;
+	}
+
+	.card-line {
+		flex: 1;
+		height: 1px;
+		background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 35%, transparent), transparent);
 	}
 
 	.achievement-card h3 {
 		font-family: 'Syne', sans-serif;
-		font-size: 1.125rem;
-		font-weight: 600;
-		letter-spacing: -0.02em;
+		font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		line-height: 1.2;
 	}
 
 	.achievement-card p {
-		margin-top: 0.5rem;
+		margin-top: 0.6rem;
+		max-width: 34ch;
 		font-size: 0.875rem;
-		line-height: 1.6;
-		color: #7a7589;
+		line-height: 1.65;
+		color: #8b8699;
+	}
+
+	.card-metric {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.2rem;
+		flex-shrink: 0;
+		text-align: right;
+	}
+
+	.achievement-card--wide .card-metric {
+		padding-left: 1.5rem;
+		border-left: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.card-metric-value {
+		font-family: 'Syne', sans-serif;
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: -0.04em;
+		font-variant-numeric: tabular-nums;
+		color: var(--accent);
+		text-shadow: 0 0 40px color-mix(in srgb, var(--accent) 35%, transparent);
+	}
+
+	.card-metric-label {
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: #6b6678;
 	}
 
 	.tournament-proof {
@@ -631,6 +817,28 @@
 
 		.achievement-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.achievement-card--wide {
+			grid-column: span 1;
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.achievement-card--wide .card-metric {
+			flex-direction: row;
+			align-items: baseline;
+			justify-content: space-between;
+			padding-left: 0;
+			padding-top: 1rem;
+			border-left: none;
+			border-top: 1px solid rgba(255, 255, 255, 0.06);
+			text-align: left;
+		}
+
+		.card-metric {
+			align-items: flex-start;
+			text-align: left;
 		}
 
 		.hero-actions {

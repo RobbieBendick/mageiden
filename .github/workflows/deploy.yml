@@ -49,7 +49,6 @@ jobs:
 
       - run: pnpm run build
         env:
-          BASE_PATH: /mageiden
           BLIZZARD_CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
           BLIZZARD_CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
           BLIZZARD_REGION: ${{ secrets.BLIZZARD_REGION }}

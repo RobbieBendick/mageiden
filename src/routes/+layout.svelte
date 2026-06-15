@@ -32,9 +32,6 @@
 		--purple-muted: rgba(124, 58, 237, 0.12);
 		--purple-border: rgba(167, 139, 250, 0.28);
 		--purple-glow: rgba(124, 58, 237, 0.25);
-		--mage: #3fc7eb;
-		--mage-light: #9ee5f7;
-		--mage-muted: rgba(63, 199, 235, 0.12);
 	}
 
 	:global(body) {

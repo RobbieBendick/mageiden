@@ -122,7 +122,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.14em;
-		color: var(--mage);
+		color: var(--purple-light);
 	}
 
 	.section-title {

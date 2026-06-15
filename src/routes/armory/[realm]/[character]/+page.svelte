@@ -43,7 +43,7 @@
 		padding: 5rem 0 6rem;
 		background:
 			radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124, 58, 237, 0.35), transparent),
-			radial-gradient(ellipse 50% 40% at 90% 60%, var(--mage-muted), transparent),
+			radial-gradient(ellipse 50% 40% at 90% 60%, var(--purple-glow), transparent),
 			radial-gradient(ellipse 40% 35% at 5% 80%, var(--purple-muted), transparent),
 			linear-gradient(180deg, #0c0a14 0%, #050508 100%);
 	}
@@ -88,7 +88,7 @@
 		height: 22rem;
 		top: 30%;
 		right: -6rem;
-		background: var(--mage-muted);
+		background: var(--purple-glow);
 	}
 
 	.page-noise {

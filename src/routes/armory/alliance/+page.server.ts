@@ -1,14 +1,14 @@
 import { base } from '$app/paths';
-import { getAllianceMage } from '$lib/server/armory-mages';
+import { getAlliancePlayer } from '$lib/server/featured-players';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const mage = getAllianceMage();
+	const player = getAlliancePlayer();
 
-	if (!mage) {
+	if (!player) {
 		throw redirect(303, `${base}/`);
 	}
 
-	throw redirect(303, `${base}${mage.href}`);
+	throw redirect(303, `${base}${player.href}`);
 };
