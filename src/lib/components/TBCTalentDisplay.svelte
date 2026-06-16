@@ -224,13 +224,25 @@
 		border-right: none;
 	}
 
-	.loadout-btn:hover {
+	.loadout-btn:hover:not(.loadout-btn--active) {
 		background: var(--purple-muted);
+		color: #eceaf4;
 	}
 
-	.loadout-btn--active {
+	.loadout-btn--active,
+	.loadout-btn--active:hover,
+	.loadout-btn--active:focus-visible {
 		background: linear-gradient(135deg, var(--purple-pale), var(--purple-light));
 		color: #0c0a14;
+	}
+
+	.loadout-btn--active:hover {
+		box-shadow: inset 0 0 0 1px rgba(12, 10, 20, 0.14);
+	}
+
+	.loadout-btn:focus-visible {
+		outline: 2px solid var(--purple-light);
+		outline-offset: 2px;
 	}
 
 	.talent-trees {

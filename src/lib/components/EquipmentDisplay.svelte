@@ -380,18 +380,63 @@
 
 	@media (max-width: 900px) {
 		.paper-doll {
-			gap: 1rem;
+			flex-direction: column;
+			align-items: stretch;
+			gap: 1.5rem;
+			max-width: none;
+			padding: 0;
 		}
 
 		.slot-column,
-		.equipment-slot {
-			width: 3.5rem;
-			height: 3.5rem;
+		.slot-column--right {
+			width: 100%;
+			align-items: stretch;
 		}
 
-		.item-name {
-			font-size: 0.72rem;
-			max-width: 10rem;
+		.equipment-slot:has(.empty-slot) {
+			display: none;
+		}
+
+		.equipment-slot {
+			width: 100%;
+			height: auto;
+		}
+
+		.item-link,
+		.item-link--right {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			width: 100%;
+			height: auto;
+			min-height: 3rem;
+			padding: 0.5rem 0.65rem;
+			margin-left: 0;
+		}
+
+		.item-icon {
+			width: 2.75rem;
+			height: 2.75rem;
+			flex-shrink: 0;
+		}
+
+		.item-name,
+		.item-name--left,
+		.item-name--right {
+			position: static;
+			top: auto;
+			left: auto;
+			right: auto;
+			transform: none;
+			flex: 1;
+			min-width: 0;
+			max-width: none;
+			font-size: 0.8125rem;
+			line-height: 1.35;
+			white-space: normal;
+			overflow: visible;
+			text-overflow: unset;
+			text-align: left;
 		}
 	}
 
@@ -401,22 +446,25 @@
 			align-items: flex-start;
 		}
 
-		.paper-doll {
-			flex-direction: column;
-			align-items: center;
+		.gear-card {
+			padding: 1.15rem 1rem 1.35rem;
 		}
 
-		.slot-column {
-			width: min(100%, 20rem);
+		.item-link,
+		.item-link--right {
+			min-height: 2.75rem;
+			padding: 0.45rem 0.55rem;
 		}
 
-		.equipment-slot {
-			width: 3rem;
-			height: 3rem;
+		.item-icon {
+			width: 2.5rem;
+			height: 2.5rem;
 		}
 
-		.item-name {
-			max-width: 8rem;
+		.item-name,
+		.item-name--left,
+		.item-name--right {
+			font-size: 0.75rem;
 		}
 	}
 </style>

@@ -1300,19 +1300,20 @@
 
 	.title-seasons-grid {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 0.35rem 1.25rem;
+		grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+		gap: 0.5rem 1rem;
 		list-style: none;
 		counter-reset: none;
 	}
 
 	.title-season {
 		display: grid;
-		grid-template-columns: 2.35rem minmax(0, 1fr) auto;
-		align-items: center;
-		gap: 0.45rem;
+		grid-template-columns: auto minmax(0, 1fr);
+		grid-template-rows: auto auto;
+		align-items: start;
+		gap: 0.35rem 0.6rem;
 		min-width: 0;
-		padding: 0.4rem 0.45rem;
+		padding: 0.5rem 0.55rem;
 		border-radius: 0.5rem;
 		transition: background 0.2s ease;
 	}
@@ -1322,6 +1323,9 @@
 	}
 
 	.title-season-tag {
+		grid-column: 1;
+		grid-row: 1;
+		padding-top: 0.1rem;
 		font-family: 'Syne', sans-serif;
 		font-size: 0.625rem;
 		font-weight: 700;
@@ -1331,23 +1335,23 @@
 	}
 
 	.title-season-name {
+		grid-column: 2;
+		grid-row: 1;
 		font-size: 0.8125rem;
 		font-weight: 500;
-		line-height: 1.3;
+		line-height: 1.4;
 		color: #eceaf4;
 		letter-spacing: -0.01em;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		min-width: 0;
 	}
 
 	.title-season-classes {
+		grid-column: 1 / -1;
+		grid-row: 2;
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: flex-end;
+		justify-content: flex-start;
 		gap: 0.3rem;
-		max-width: 8.5rem;
 	}
 
 	.title-season-class {
@@ -1542,7 +1546,7 @@
 			text-align: left;
 		}
 
-		.achievement-card--titles .titles-row {
+		.achievement-card--wide .titles-row {
 			flex-direction: column;
 			align-items: stretch;
 		}
@@ -1566,8 +1570,7 @@
 		}
 
 		.title-seasons-grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 0.35rem 0.85rem;
+			grid-template-columns: 1fr;
 		}
 
 		.card-metric {
