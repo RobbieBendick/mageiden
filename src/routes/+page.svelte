@@ -43,7 +43,17 @@
 			images: [
 				{
 					src: `${base}/images/tournament-screenshot-2.png`,
-					alt: 'Tournament results: WOW NA Arena Cup 4'
+					alt: 'Tournament results: Union 2nd place with Mageiden on the roster'
+				}
+			]
+		},
+		{
+			label: 'AWC Spring Finals 2018',
+			href: 'https://www.esportsearnings.com/tournaments/27273-awc-spring-finals-2018',
+			images: [
+				{
+					src: `${base}/images/tournament-screenshot-3.png`,
+					alt: 'Tournament results: Super Frogs 4th place with Mageiden on the roster'
 				}
 			]
 		},
@@ -52,13 +62,13 @@
 			href: 'https://raider.io/events/cataclysm-classic-tournament/brackets/na-cataclysm-classic-arena-finals',
 			images: [
 				{
-					src: `${base}/images/tournament-screenshot-3-1.png`,
-					alt: 'Tournament bracket',
+					src: `${base}/images/tournament-screenshot-4-1.png`,
+					alt: 'Cataclysm Classic arena finals bracket',
 					caption: 'Bracket'
 				},
 				{
-					src: `${base}/images/tournament-screenshot-3-2.png`,
-					alt: 'Tournament team screenshot with Mageiden on the roster',
+					src: `${base}/images/tournament-screenshot-4-2.png`,
+					alt: 'Cataclysm Classic finals match with Mageiden on Poggities',
 					caption: 'Team'
 				}
 			]
