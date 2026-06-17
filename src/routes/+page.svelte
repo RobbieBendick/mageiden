@@ -19,6 +19,7 @@
 	} from '$lib/components/TournamentCarousel.svelte';
 	import { DEFAULT_TITLE } from '$lib/site';
 	import { scrollReveal } from '$lib/scroll-reveal';
+	import { TESTIMONIALS } from '$lib/testimonials';
 
 	const DISCORD_URL = 'https://discord.gg/XuJXf37WvE';
 
@@ -412,6 +413,55 @@
 		</div>
 	</section>
 
+	<section class="testimonials">
+		<div class="container testimonials-inner">
+			<div class="section-header" use:scrollReveal={{ variant: 'left' }}>
+				<p class="section-eyebrow">Clients</p>
+				<h2>What people say</h2>
+				<p class="section-desc">
+					Specific feedback from coached players, with bracket, class, and results included.
+				</p>
+			</div>
+
+			<div class="testimonials-grid">
+				{#each TESTIMONIALS as testimonial, i}
+					<blockquote
+						class="testimonial-card"
+						style="--accent: {testimonial.accent}"
+						use:scrollReveal={{
+							delay: i * 90,
+							variant: i % 2 === 0 ? 'rise' : 'soft'
+						}}
+					>
+						<div
+							class="testimonial-stars"
+							aria-label="{testimonial.rating} out of 5 stars"
+							role="img"
+						>
+							{#each { length: 5 } as _, starIndex}
+								{@const starFill = testimonial.rating - starIndex}
+								<span
+									class="testimonial-star"
+									class:testimonial-star--filled={starFill >= 1}
+									class:testimonial-star--half={starFill >= 0.5 && starFill < 1}
+									aria-hidden="true"
+								>★</span>
+							{/each}
+						</div>
+						<p class="testimonial-quote">"{testimonial.quote}"</p>
+						<footer class="testimonial-footer">
+							<cite class="testimonial-author">{testimonial.author}</cite>
+							<span class="testimonial-context">{testimonial.context}</span>
+							{#if testimonial.result}
+								<span class="testimonial-result">{testimonial.result}</span>
+							{/if}
+						</footer>
+					</blockquote>
+				{/each}
+			</div>
+		</div>
+	</section>
+
 	<section class="footer-cta">
 		<div class="footer-glow"></div>
 		<div class="container footer-inner">
@@ -450,7 +500,8 @@
 	.network-panel:global(.scroll-reveal:not(.scroll-reveal--done)),
 	.network-feature:global(.scroll-reveal:not(.scroll-reveal--done)),
 	.title-seasons:global(.scroll-reveal:not(.scroll-reveal--done)),
-	.title-seasons-era:global(.scroll-reveal:not(.scroll-reveal--done)) {
+	.title-seasons-era:global(.scroll-reveal:not(.scroll-reveal--done)),
+	.testimonial-card:global(.scroll-reveal:not(.scroll-reveal--done)) {
 		transition:
 			opacity var(--reveal-duration, 1.2s) cubic-bezier(0.16, 1, 0.3, 1),
 			transform var(--reveal-duration, 1.2s) cubic-bezier(0.16, 1, 0.3, 1),
@@ -500,7 +551,8 @@
 	.network-panel.scroll-reveal--done,
 	.title-seasons.scroll-reveal--done,
 	.title-seasons-era.scroll-reveal--done,
-	.network-feature.scroll-reveal--done {
+	.network-feature.scroll-reveal--done,
+	.testimonial-card.scroll-reveal--done {
 		transition:
 			border-color 0.3s ease,
 			transform 0.3s ease,
@@ -1443,6 +1495,131 @@
 		color: #7a7589;
 	}
 
+	/* ── Testimonials ── */
+	.testimonials {
+		position: relative;
+		padding: 5rem 0;
+		background: linear-gradient(180deg, #050508 0%, #0a0812 45%, #06050a 100%);
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+	}
+
+	.testimonials-inner {
+		position: relative;
+	}
+
+	.testimonials-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+		gap: 1rem;
+		margin-top: 2.75rem;
+	}
+
+	.testimonial-card {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 1.25rem;
+		min-height: 11rem;
+		margin: 0;
+		padding: 1.35rem 1.4rem 1.4rem;
+		border-radius: 1.15rem;
+		border: 1px solid rgba(255, 255, 255, 0.07);
+		background:
+			radial-gradient(ellipse 120% 90% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 58%),
+			linear-gradient(160deg, rgba(22, 18, 36, 0.92), rgba(8, 6, 14, 0.98));
+		backdrop-filter: blur(16px);
+	}
+
+	.testimonial-card:hover {
+		border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+		transform: translateY(-3px);
+		box-shadow:
+			0 20px 50px rgba(0, 0, 0, 0.35),
+			0 0 48px color-mix(in srgb, var(--accent) 12%, transparent);
+	}
+
+	.testimonial-stars {
+		display: flex;
+		gap: 0.15rem;
+	}
+
+	.testimonial-star {
+		position: relative;
+		display: inline-block;
+		font-size: 0.875rem;
+		line-height: 1;
+		color: rgba(255, 255, 255, 0.15);
+	}
+
+	.testimonial-star--filled {
+		color: #fbbf24;
+		text-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+	}
+
+	.testimonial-star--half {
+		color: rgba(255, 255, 255, 0.15);
+	}
+
+	.testimonial-star--half::after {
+		content: '★';
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 50%;
+		overflow: hidden;
+		color: #fbbf24;
+		text-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+	}
+
+	.testimonial-quote {
+		font-size: 0.9375rem;
+		line-height: 1.65;
+		color: #d8d4e4;
+		letter-spacing: -0.01em;
+	}
+
+	.testimonial-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem 0.55rem;
+		padding-top: 0.85rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.testimonial-author {
+		font-family: 'Syne', sans-serif;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		font-style: normal;
+		color: #eceaf4;
+	}
+
+	.testimonial-context {
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: #7a7589;
+	}
+
+	.testimonial-context::before {
+		content: '·';
+		margin-right: 0.55rem;
+		color: #4a4658;
+	}
+
+	.testimonial-result {
+		padding: 0.2rem 0.5rem;
+		font-family: 'Syne', sans-serif;
+		font-size: 0.625rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--accent);
+		background: color-mix(in srgb, var(--accent) 12%, transparent);
+		border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+		border-radius: 0.35rem;
+	}
+
 	/* ── Footer CTA ── */
 	.footer-cta {
 		position: relative;
@@ -1591,6 +1768,15 @@
 		.tournament-proof {
 			grid-template-columns: 1fr;
 			gap: 1.75rem;
+		}
+
+		.testimonials {
+			padding: 4rem 0;
+		}
+
+		.testimonials-grid {
+			grid-template-columns: 1fr;
+			margin-top: 2rem;
 		}
 	}
 </style>
