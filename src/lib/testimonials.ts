@@ -28,9 +28,9 @@ export const TESTIMONIALS: Testimonial[] = [
 	},
 	{
 		quote:
-			'no fluff in rm. straight matchup strats, help with positioning, and i had a vod we reviewed which helped me alot. best coach ive paid for.',
+			'no fluff in RM. straight matchup strats, help with positioning, and i had a vod we reviewed which helped me alot. best coach ive paid for.',
 		author: 'flappywings',
-		context: '2v2 · RM · Rogue',
+		context: '2v2 · Rogue',
 		result: '1800 → 2350',
 		rating: 5,
 		accent: '#fcd34d'
